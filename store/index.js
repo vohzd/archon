@@ -16,7 +16,6 @@ import getters 								from "./rootGetters.js";
  * INDIVIDUAL COMPONENT VUEX STUFF
  */
 
-import Youtube 						  		from "./Youtube/index.js";
 
 Vue.use(Vuex);
 
@@ -25,7 +24,6 @@ export default () => {
 		actions,
 		getters,
 		modules: {
-			Youtube
 		},
 		mutations: {
 			...myMutations
