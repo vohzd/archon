@@ -3,37 +3,38 @@
     <site-logo></site-logo>
 
     <h1>Sites</h1>
-    <div class="row">
-      <div class="c50">
-        <h3>Deezer</h3>
-        <button>Connect</button>
+    <div class="row mbx">
+      <div class="c50 mt">
+        <h3 class="mb">Deezer</h3>
+        <button disabled>Connect</button>
       </div>
-      <div class="c50">
-        <h3>Github</h3>
-        <button>Connect</button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="c50">
-        <h3>Lastfm</h3>
-        <button>Connect</button>
-      </div>
-      <div class="c50">
-        <h3>Spotify</h3>
-        <button>Connect</button>
+      <div class="c50 mt">
+        <h3 class="mb">Github</h3>
+        <button @click="connect('github')" disabled>Connect</button>
       </div>
     </div>
-    <div class="row">
-      <div class="c50">
-        <h3>YouTube</h3>
-        <button>Connect</button>
+    <div class="row mbx">
+      <div class="c50 mt">
+        <h3 class="mb">Lastfm</h3>
+        <button disabled>Connect</button>
+      </div>
+      <div class="c50 mt">
+        <h3 class="mb">Spotify</h3>
+        <button disabled>Connect</button>
+      </div>
+    </div>
+    <div class="row mbx">
+      <div class="c50 mt">
+        <h3 class="mb"><img src="~/assets/img/youtube.png" width="128px"/></h3>
+        <nuxt-link to="/connect/youtube">
+          <button>Connect</button>
+        </nuxt-link>
       </div>
     </div>
   </main>
 </template>
 
 <script>
-
 
 import SiteLogo from "~/components/logo/SiteLogo.vue";
 
@@ -43,10 +44,26 @@ export default {
   },
   data(){
     return {
-      url: null
+      url: null,
+      github: {
+        clientId: "TODO"
+      }
     }
   },
   methods: {
+    /*
+    async connect(site){
+      if (site === "github"){
+        try {
+          //const yes = await this.$axios.get(`https://github.com/login/oauth/authorize?client_id=${this.github.clientId}&login=${this.github.account}`)
+          window.open(`https://github.com/login/oauth/authorize?client_id=${this.github.clientId}`)
+          //console.log(yes);
+        }
+        catch (e){
+          console.log(e);
+        }
+      }
+    }*/
   }
 }
 </script>
