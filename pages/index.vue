@@ -15,8 +15,10 @@
     </div>
     <div class="row mbx">
       <div class="c50 mt">
-        <h3 class="mb">Lastfm</h3>
-        <button disabled>Connect</button>
+        <h3 class="mb"><img src="~/assets/img/lastfm.png" width="128px"/></h3>
+        <nuxt-link to="/connect/lastfm">
+          <button>Connect lastfm</button>
+        </nuxt-link>
       </div>
       <div class="c50 mt">
         <h3 class="mb">Spotify</h3>
@@ -27,7 +29,7 @@
       <div class="c50 mt">
         <h3 class="mb"><img src="~/assets/img/youtube.png" width="128px"/></h3>
         <nuxt-link to="/connect/youtube">
-          <button>Connect</button>
+          <button>Connect YouTube</button>
         </nuxt-link>
       </div>
     </div>

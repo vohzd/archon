@@ -1,6 +1,7 @@
 <template lang="html">
 
   <main class="center">
+    PLACEHOLDER
     <!-- PROBABLY NEEDS DEPRECATION
 
     <h2>Auth</h2>

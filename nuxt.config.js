@@ -28,6 +28,7 @@ module.exports = {
   modules: [
     "@nuxtjs/axios"
   ],
+  serverMiddleware: ["~/api/index.js" ],
   axios: {
     baseURL: "/",
     proxyHeaders: false,

@@ -1,7 +1,6 @@
 <template lang="html">
   <main class="center">
     <h1>Link {{ siteName  }}</h1>
-
   </main>
 </template>
 
@@ -16,10 +15,12 @@ export default {
   },
   async mounted(){
     try {
-      const { data } = await this.$axios.post(`http://localhost:1080/oauth/connect/youtube`, {
+      const { data } = await this.$axios.post(`http://localhost:1080/oauth/connect/${this.siteName}`, {
         redirectURL: "http://localhost:3000/connect"
       });
-      window.location = data.url
+      console.log("finished request");
+      console.log(data);
+      //window.location = data.url
     }
     catch (e){
       console.log(e);
