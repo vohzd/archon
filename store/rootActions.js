@@ -5,16 +5,17 @@ export default {
   async linkAccount({}, payload){
     console.log("hello from action");
     console.log(payload);
-
     try {
       console.log("trying...");
-      const { data } = this.$axios.post(`/api/connect/${payload.siteName}`, {
+      const { data } = await this.$axios.post(`/api/connect/${payload.siteName}`, {
         user: payload.user
-      });
+      }, { withCredentials: true });
       console.log("finished");
       console.log(data);
     }
     catch (e) { console.log(e); }
-
+  },
+  async setToken({ commit, dispatch }, payload){
+    commit("SET_TOKEN", payload);
   }
 };

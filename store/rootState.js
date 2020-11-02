@@ -1,5 +1,6 @@
 export default () => {
   return {
-    serverEndpoint: null
+    authServerEndpoint: null,
+    githubToken: null
   }
 }

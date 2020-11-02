@@ -1,5 +1,6 @@
 import state from "./rootState.js";
 
 export default {
-  serverEndpoint: (state) => process.env.SERVER_ENDPOINT
+  githubToken: (state) => state.githubToken,
+  authServerEndpoint: (state) => process.env.AUTH_SERVER_ENDPOINT
 }
