@@ -133,9 +133,8 @@ button[disabled] {
 }
 
 button:hover:not(:disabled) {
-  transform: scale(1.15);
   cursor: pointer;
-  box-shadow: inset 0 0 8px 32px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 0 8px 32px rgba(0, 0, 0, 0.25);
 
 }
 
@@ -287,6 +286,12 @@ button::-moz-focus-inner {
 .flex-item {
   flex: 1;
 }
+
+  .grid {
+    display: grid;
+    grid-column-gap: 32px;
+    grid-template-columns: 1fr 1fr;
+  }
 
 
   .lds-ellipsis div {

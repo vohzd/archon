@@ -36,7 +36,7 @@ export default {
       Requests the users identity
       https://docs.github.com/en/free-pro-team@latest/developers/apps/authorizing-oauth-apps#1-request-a-users-github-identity
       */
-      window.location = `https://github.com/login/oauth/authorize?client_id=${this.clientID}&scope=repo`;
+      window.location = `https://github.com/login/oauth/authorize?client_id=${this.clientID}&scope=repo,user`;
     },
     detectCode(){
       /*  Step 2:
