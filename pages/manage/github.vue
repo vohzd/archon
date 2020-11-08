@@ -12,7 +12,7 @@
           <div class="row">
             Num repos: {{ repos.length }}
           </div>
-          <button class="row mt">Archive All</button>
+          <button class="row mt" @click="archive">Archive All</button>
         </div>
       </div>
     </div>
@@ -32,7 +32,7 @@
         <div class="c50">
           <div class="pad">
             <h2>Starred Repos <span v-if="repos">{{ stars.length }}</span></h2>
-            <div class="row mb" v-for="star in stars">
+            <div class="row mb" v-for="(star, i) in stars" :class=" { 'is-archiving': currentNumber === i } ">
               <strong>{{ star.name }}</strong>
               <strong>{{ star.full_name }}</strong>
               <code class="row">{{ star.description }}</code>
@@ -62,20 +62,43 @@ export default {
       totalRepos: 0,
       reposPage: 0,
       starsPage: 0,
-      user: null
+      currentNumber: 0,
+      user: null,
+      isDisabled: true
     }
   },
   async mounted(){
     if (this.githubToken){
       await this.getUser();
-      for (let i=0; i < 10; i++)
-      {
+      for (let i=0; i < 1; i++){
         await this.getRepos();
         await this.getStars();
       }
+      this.isDisabled = false;
     }
   },
   methods: {
+    archive(){
+      console.log("perform the archive plz....");
+      console.log(this.repos[2]);
+
+      const ws = new WebSocket("ws://localhost:3000");
+      // todo change to WebSockets library instead
+      ws.onopen = (event) => {
+        console.log("WEBSOCKET OPENED");
+        console.log(event);
+        ws.send(JSON.stringify({
+          "type": "sync-github",
+          "data": this.repos[2]
+        }))
+      }
+
+      ws.onmessage = (response) => {
+        console.log("MESSAGE RECEIVED");
+        console.log(response)
+      };
+
+    },
     async getUser(){
       try {
         const { data } = await this.$axios.get(`https://api.github.com/user`, { headers: { "Authorization": `token ${this.githubToken}` } });
@@ -108,4 +131,9 @@ export default {
 </script>
 
 <style lang="css" scoped>
+
+.is-archiving {
+  opacity: 0.2;
+}
+
 </style>

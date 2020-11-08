@@ -26,7 +26,8 @@ module.exports = {
     optimizeCSS: true
   },
   modules: [
-    "@nuxtjs/axios"
+    "@nuxtjs/axios",
+    "~/sockets/index.js"
   ],
   serverMiddleware: ["~/api/index.js" ],
   axios: {
