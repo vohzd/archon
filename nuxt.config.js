@@ -20,7 +20,7 @@ module.exports = {
   },
   loading: { color: '#b56d82' },
   env: {
-    AUTH_SERVER_ENDPOINT: process.env.AUTH_SERVER_ENDPOINT ? process.env.AUTH_SERVER_ENDPOINT : "http://localhost:1080"
+    AUTH_SERVER_ENDPOINT: process.env.AUTH_SERVER_ENDPOINT ? process.env.AUTH_SERVER_ENDPOINT : "https://localhost:1080"
   },
   build: {
     optimizeCSS: true
@@ -32,7 +32,7 @@ module.exports = {
   serverMiddleware: ["~/api/index.js" ],
   axios: {
     baseURL: "/",
-    proxyHeaders: false,
+    proxyHeaders: true,
     credentials: true
   },
 }

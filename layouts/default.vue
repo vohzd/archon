@@ -7,14 +7,22 @@
 
 
 <script>
-import TopToolbar from "~/components/TopToolbar.vue";
 
+import TopToolbar from "~/components/TopToolbar.vue";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
     "top-toolbar": TopToolbar
   },
+  methods: {
+    ...mapActions([
+      "checkCookies"
+    ])
+  },
+  async mounted(){
+    await this.checkCookies()
+  }
 };
 </script>
 

@@ -58,7 +58,7 @@ export default {
         const { data } = await this.$axios.post(`${this.authServerEndpoint}/oauth/connect/github`, {
           code,
           redirectUrl: "/connect/github"
-        });
+        }, { withCredentials: true });
 
         const token = data.token;
 

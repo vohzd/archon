@@ -10,8 +10,11 @@
       </div>
       <div class="c50 mt">
         <h3 class="mb"><img src="~/assets/img/github.png" width="128px"/></h3>
-        <nuxt-link to="/connect/github">
+        <nuxt-link to="/connect/github" v-if="!githubToken">
           <button>Connect Github</button>
+        </nuxt-link>
+        <nuxt-link to="/manage/github" v-else>
+          <button>Manage Github</button>
         </nuxt-link>
       </div>
     </div>
@@ -40,11 +43,18 @@
 
 <script>
 
+import { mapActions, mapGetters } from "vuex";
+
 import SiteLogo from "~/components/logo/SiteLogo.vue";
 
 export default {
   components: {
     SiteLogo
+  },
+  computed: {
+    ...mapGetters([
+      "githubToken"
+    ])
   }
 }
 </script>

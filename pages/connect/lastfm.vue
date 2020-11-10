@@ -24,6 +24,7 @@ export default {
   },
   methods: {
     ...mapActions([
+      "checkCookies",
       "linkAccount"
     ]),
     handleClick(){
