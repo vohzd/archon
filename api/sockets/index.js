@@ -11,7 +11,7 @@ const {
 /* CALL METHODS */
 wss.on("connection", ws => {
   ws.on("message", message => {
-    handleMessage(message);
+    handleMessage(message, ws);
   })
   /* send something back to the client
   ws.send(JSON.stringify({
@@ -21,9 +21,14 @@ wss.on("connection", ws => {
 
 
 /* METHODS */
-function handleMessage(message){
-  console.log("MESSAGE WAS RECEIV0000")
-  console.log(message)
+function handleMessage(message, ws){
+  console.log("MESSAGE WAS RECE")
+  const decoded = JSON.parse(message);
+  if (decoded.type === "sync-github"){
+    archiveGH(decoded.data);
+    ws.send("RECEIVED REQUEST FOR GITHUB")
+  }
+
 }
 
 /* CREATE THE SERVER AND COMBINE IT WITH NUXT */
@@ -39,8 +44,4 @@ export default function () {
     })
   })
 
-  this.nuxt.hook("ready", nuxt => {
-    console.log("NUXT IS READY")
-    console.log(nuxt)
-  })
 }

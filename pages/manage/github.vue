@@ -70,14 +70,10 @@ export default {
     }
   },
   async mounted(){
-    if (this.githubToken){
-      await this.getUser();
-      for (let i=0; i < 1; i++){
-        await this.getRepos();
-        await this.getStars();
-      }
+    console.log(this.githubToken)
 
-      this.isDisabled = false;
+    if (this.githubToken){
+      this.init();
     }
   },
   methods: {
@@ -107,12 +103,25 @@ export default {
 
 
     },
+    async init(){
+      await this.getUser();
+      for (let i=0; i < 1; i++){
+        await this.getRepos();
+        await this.getStars();
+      }
+
+      this.isDisabled = false;
+    },
     async archive(){
 
+      /*
       if (!this.ws){
         console.log("connect to the server for me please");
         await this.connectToWSS();
-      }
+      }*/
+
+      await this.connectToWSS();
+
       console.log(this.ws)
 
       this.ws.send(JSON.stringify({
@@ -150,9 +159,15 @@ export default {
       }
       catch (e){ console.log(e) }
 
-    },
+    }
   },
-
+  watch: {
+    githubToken() {
+      if (this.githubToken){
+        this.init();
+      }
+    }
+  }
 }
 </script>
 
