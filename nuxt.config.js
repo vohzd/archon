@@ -23,16 +23,20 @@ module.exports = {
     AUTH_SERVER_ENDPOINT: process.env.AUTH_SERVER_ENDPOINT ? process.env.AUTH_SERVER_ENDPOINT : "https://localhost:1080"
   },
   build: {
-    optimizeCSS: true
+    optimizeCSS: true,
   },
   modules: [
     "@nuxtjs/axios",
-    "~/sockets/index.js"
+    "~/api/sockets/index.js"
   ],
+  watch: ["~api"],
+  io: {
+    sockets: [ { name: "main", url: "http://localhost:3000"} ]
+  },
   serverMiddleware: ["~/api/index.js" ],
   axios: {
     baseURL: "/",
     proxyHeaders: true,
     credentials: true
-  },
+  }
 }

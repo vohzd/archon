@@ -8,7 +8,7 @@ const {
 }                                         = require("../../services/website/index.js");
 
 router.get("/websites", async (req, res, next) => {
-  console.log("HALLO");
+  console.log("HALLO111");
   let query = req.query ? req.query : {};
   try {
     const websites = await getWebsites(query);

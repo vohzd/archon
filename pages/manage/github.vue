@@ -12,7 +12,7 @@
           <div class="row">
             Num repos: {{ repos.length }}
           </div>
-          <button class="row mt" @click="archive">Archive All</button>
+          <button class="row mt" @click="archive">Archive</button>
         </div>
       </div>
     </div>
@@ -57,6 +57,7 @@ export default {
   },
   data(){
     return {
+      amountRequested: 2,
       repos: [],
       stars: [],
       totalRepos: 0,
@@ -64,7 +65,8 @@ export default {
       starsPage: 0,
       currentNumber: 0,
       user: null,
-      isDisabled: true
+      isDisabled: true,
+      ws: null
     }
   },
   async mounted(){
@@ -74,29 +76,52 @@ export default {
         await this.getRepos();
         await this.getStars();
       }
+
       this.isDisabled = false;
     }
   },
   methods: {
-    archive(){
-      console.log("perform the archive plz....");
-      console.log(this.repos[2]);
+    async connectToWSS(){
 
-      const ws = new WebSocket("ws://localhost:3000");
-      // todo change to WebSockets library instead
-      ws.onopen = (event) => {
-        console.log("WEBSOCKET OPENED");
-        console.log(event);
-        ws.send(JSON.stringify({
-          "type": "sync-github",
-          "data": this.repos[2]
-        }))
+      return new Promise((resolve, reject) => {
+        console.log("inside promise");
+        this.ws = new WebSocket("ws://localhost:3000");
+
+        this.ws.onopen = (event) => {
+          console.log("WEBSOCKET OPENED");
+          console.log(event);
+          resolve()
+        }
+
+        this.ws.onerror = (err) => {
+          reject(err);
+        }
+
+        this.ws.onmessage = (response) => {
+          console.log("MESSAGE RECEIVED");
+          console.log(response)
+        };
+
+      });
+      console.log("connecting...")
+
+
+    },
+    async archive(){
+
+      if (!this.ws){
+        console.log("connect to the server for me please");
+        await this.connectToWSS();
       }
+      console.log(this.ws)
 
-      ws.onmessage = (response) => {
-        console.log("MESSAGE RECEIVED");
-        console.log(response)
-      };
+      this.ws.send(JSON.stringify({
+        type: "sync-github",
+        data: {
+          repos: this.repos[1],
+          user: this.user
+        }
+      }))
 
     },
     async getUser(){
@@ -109,7 +134,7 @@ export default {
     },
     async getRepos(){
       try {
-        const { data } = await this.$axios.get(`https://api.github.com/user/repos?type=all&per_page=100&page=${this.reposPage}`, { headers: { "Authorization": `token ${this.githubToken}` } });
+        const { data } = await this.$axios.get(`https://api.github.com/user/repos?type=all&per_page=${this.amountRequested}&page=${this.reposPage}`, { headers: { "Authorization": `token ${this.githubToken}` } });
         this.repos.push(...data)
         this.reposPage++;
       }
@@ -118,7 +143,7 @@ export default {
     async getStars(){
       console.log("getting starred");
       try {
-        const { data } = await this.$axios.get(`https://api.github.com/users/${this.user.login}/starred?per_page=100&page=${this.starsPage}`, { headers: { "Authorization": `token ${this.githubToken}` } });
+        const { data } = await this.$axios.get(`https://api.github.com/users/${this.user.login}/starred?per_page=${this.amountRequested}&page=${this.starsPage}`, { headers: { "Authorization": `token ${this.githubToken}` } });
         console.log(data);
         this.stars.push(...data)
         this.starsPage++;
@@ -126,7 +151,8 @@ export default {
       catch (e){ console.log(e) }
 
     },
-  }
+  },
+
 }
 </script>
 

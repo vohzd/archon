@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "nuxt",
+    "dev2": "nuxt",
     "generate": "nuxt generate"
   },
   "repository": {
@@ -18,5 +19,8 @@
     "nuxt": "^2.14.7",
     "nuxt-socket-io": "^1.1.12",
     "ws": "^7.4.0"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0"
   }
 }

@@ -1,10 +1,12 @@
 <template lang="html">
   <main class="center">
-    <h3 class="mb"><img src="~/assets/img/github.png" width="128px"/></h3>
+    <h3 class="mb"><img src="~/assets/img/youtube.png" width="128px"/></h3>
 
     <code class="row mbx">
       status: {{ status }}
     </code>
+
+    <button @click="connect" v-show="status === 'waiting'">Connect</button>
 
   </main>
 </template>
@@ -41,10 +43,12 @@ export default {
       Gets `code` from the query string params
       https://docs.github.com/en/free-pro-team@latest/developers/apps/authorizing-oauth-apps#2-users-are-redirected-back-to-your-site-by-github
       */
-      this.status = "working";
-      const code = window.location.search.split("code=")[1];
-      console.log(code);
-      this.retreiveToken(code);
+      if (window.location.search && window.location.search.indexOf("code=") > -1){
+        this.status = "working";
+        const code = window.location.search.split("code=")[1];
+        console.log(code);
+        this.retreiveToken(code);
+      }
     },
     async retreiveToken(code){
       /*  Step 3:
@@ -73,12 +77,7 @@ export default {
     }
   },
   mounted(){
-    if (window.location.search && window.location.search.indexOf("code=") > -1){
-      this.detectCode();
-    }
-    else {
-      this.connect();
-    }
+    //this.detectCode();
   }
 }
 
