@@ -21,8 +21,8 @@
     <div class="row mbx">
       <div class="c50 mt">
         <h3 class="mb"><img src="~/assets/img/lastfm.png" width="128px"/></h3>
-        <nuxt-link to="/connect/lastfm">
-          <button>Connect lastfm</button>
+        <nuxt-link to="/manage/lastfm">
+          <button>last.fm</button>
         </nuxt-link>
       </div>
       <div class="c50 mt">
