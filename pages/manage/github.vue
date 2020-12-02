@@ -5,9 +5,7 @@
     <div class="user-panel row" v-if="user">
       <h1 class="mb">Welcome, {{ user.login }}</h1>
       <div class="row small mb">
-        <!--status: {{ status }}-->
-
-        {{ user }}
+        status: {{ status }}
       </div>
       <div class="grid row">
         <div class="grid-item">
@@ -15,7 +13,7 @@
         </div>
         <div class="grid-item">
           <div class="row">
-            Num repos: {{ totalRepos }}
+            Num repos: {{ repos.length }}
           </div>
           <button class="row mt" @click="archive">Archive Everything</button>
         </div>
@@ -34,6 +32,7 @@
             </div>
           </div>
         </div>
+        <!--
         <div class="c50">
           <div class="pad">
             <h2>Starred Repos <span v-if="repos">{{ stars.length }}</span></h2>
@@ -44,7 +43,7 @@
               <small class="row">{{ star.clone_url }}</small>
             </div>
           </div>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
@@ -62,7 +61,7 @@ export default {
   },
   data(){
     return {
-      amountRequested: 30,
+      amountRequested: 50,
       repos: [],
       orgs: [],
       stars: [],
@@ -83,14 +82,10 @@ export default {
   },
   methods: {
     async connectToWSS(){
-
       return new Promise((resolve, reject) => {
-        console.log("inside promise");
         this.ws = new WebSocket("ws://localhost:3000");
 
         this.ws.onopen = (event) => {
-          console.log("WEBSOCKET OPENED");
-          console.log(event);
           resolve()
         }
 
@@ -98,9 +93,10 @@ export default {
           reject(err);
         }
 
-        this.ws.onmessage = (response) => {
+        this.ws.onmessage = (message) => {
           console.log("MESSAGE RECEIVED");
-          console.log(response)
+          console.log(message)
+          this.status = JSON.stringify(message.data);
         };
 
       });
@@ -120,12 +116,12 @@ export default {
       this.status = "getting repos...";
       const numPagesRepos = Math.round(this.totalRepos / this.amountRequested);
       console.log(numPagesRepos);
-
-      for (let i=0; i <= numPagesRepos; i++){
+*/
+      for (let i=0; i <= 10; i++){
         await this.getRepos();
       }
 
-*/
+
       //this.status = "getting stars...";
       //this.status = "ready to archive!";
 
@@ -182,11 +178,11 @@ export default {
       try {
         console.log("GETTING REPOS");
         console.log(this.reposPage);
-        const reposReq = await this.$axios.get(`https://api.github.com/user/repos?type=all&per_page=${this.amountRequested}&page=${this.reposPage}`, { headers: { "Authorization": `token ${this.githubToken}` } });
-        console.log(reposReq);
-        console.log(reposReq.headers.link);
-        //this.repos.push(...data)
-        //this.reposPage++;
+        const { data } = await this.$axios.get(`https://api.github.com/user/repos?type=all&per_page=${this.amountRequested}&page=${this.reposPage}`, { headers: { "Authorization": `token ${this.githubToken}` } });
+        //cdconsole.log(reposReq);
+        //console.log(reposReq.headers.link);
+        this.repos.push(...data)
+        this.reposPage++;
       }
       catch (e){ console.log(e) }
     },
