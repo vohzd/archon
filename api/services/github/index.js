@@ -24,7 +24,20 @@ async function getFiles(){
   return await Promise.all(promises);
 }*/
 
-async function archiveGH (data) {
+
+function* generateRepos(repos){
+  // do some work
+  for ([index, repo] of repos.entries()){
+    yield `ARCHIVING REPO NUM: ${index}`;
+  }
+
+  // return on complete
+  return;
+
+}
+
+
+async function archiveGH(data, ws) {
   const path = `${dataPath}/${data.user.login}`;
 
   if (!fs.existsSync(path)){
@@ -37,6 +50,25 @@ async function archiveGH (data) {
 
   // repo metadata
   fs.writeFileSync(`${dataPath}/${data.user.login}/repos/index.json`, JSON.stringify(data.repos))
+
+
+  // iterate and yield to give progress
+  // set up a generator
+
+  ws.send("BEGINNING TO ARCHIVE")
+
+  const generate = generateRepos(data.repos);
+
+  // iterate through them and inform the parent
+
+  console.log(generate.next());
+  console.log(generate.next());
+  console.log(generate.next());
+  console.log(generate.next());
+  console.log(generate.next());
+
+  ws.send("COMPLETED")
+
 
   /*
   console.log("archivibg,,,,")

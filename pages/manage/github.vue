@@ -4,15 +4,20 @@
 
     <div class="user-panel row" v-if="user">
       <h1 class="mb">Welcome, {{ user.login }}</h1>
-      <div class="grid">
+      <div class="row small mb">
+        <!--status: {{ status }}-->
+
+        {{ user }}
+      </div>
+      <div class="grid row">
         <div class="grid-item">
           <img :src="user.avatar_url" class="row">
         </div>
         <div class="grid-item">
           <div class="row">
-            Num repos: {{ repos.length }}
+            Num repos: {{ totalRepos }}
           </div>
-          <button class="row mt" @click="archive">Archive</button>
+          <button class="row mt" @click="archive">Archive Everything</button>
         </div>
       </div>
     </div>
@@ -57,8 +62,9 @@ export default {
   },
   data(){
     return {
-      amountRequested: 2,
+      amountRequested: 30,
       repos: [],
+      orgs: [],
       stars: [],
       totalRepos: 0,
       reposPage: 0,
@@ -66,12 +72,11 @@ export default {
       currentNumber: 0,
       user: null,
       isDisabled: true,
-      ws: null
+      ws: null,
+      status: "waiting..."
     }
   },
   async mounted(){
-    console.log(this.githubToken)
-
     if (this.githubToken){
       this.init();
     }
@@ -104,11 +109,29 @@ export default {
 
     },
     async init(){
+      this.status = "retreiving user...";
       await this.getUser();
-      for (let i=0; i < 1; i++){
+      this.status = "retreiving repos...";
+      await this.getRepos();
+
+      /*
+      await this.getOrgs();
+      await this.getOrgRepos();
+      this.status = "getting repos...";
+      const numPagesRepos = Math.round(this.totalRepos / this.amountRequested);
+      console.log(numPagesRepos);
+
+      for (let i=0; i <= numPagesRepos; i++){
         await this.getRepos();
-        await this.getStars();
       }
+
+*/
+      //this.status = "getting stars...";
+      //this.status = "ready to archive!";
+
+
+      //console.log(this.user);
+
 
       this.isDisabled = false;
     },
@@ -127,7 +150,7 @@ export default {
       this.ws.send(JSON.stringify({
         type: "sync-github",
         data: {
-          repos: this.repos[1],
+          repos: this.repos,
           user: this.user
         }
       }))
@@ -137,15 +160,33 @@ export default {
       try {
         const { data } = await this.$axios.get(`https://api.github.com/user`, { headers: { "Authorization": `token ${this.githubToken}` } });
         this.user = data;
-        this.totalRepos = this.user.public_repos + this.user.total_private_repos
+        this.totalRepos = this.user.public_repos + this.user.total_private_repos;
       }
       catch (e){ console.log(e) }
     },
+    async getOrgs(){
+      try {
+        const { data } = await this.$axios.get(`${this.user.organizations_url}?type=all&per_page=100`, { headers: { "Authorization": `token ${this.githubToken}` } });
+        this.orgs = data;
+      }
+      catch (e){ console.log(e) }
+    },
+    async getOrgRepos(){
+      this.orgs.forEach(async (org, i) => {
+        const repoReq = await this.$axios.get(`${org.repos_url}?type=all&per_page=${this.amountRequested}`, { headers: { "Authorization": `token ${this.githubToken}` } });
+        this.totalRepos += repoReq.data.length
+      })
+
+    },
     async getRepos(){
       try {
-        const { data } = await this.$axios.get(`https://api.github.com/user/repos?type=all&per_page=${this.amountRequested}&page=${this.reposPage}`, { headers: { "Authorization": `token ${this.githubToken}` } });
-        this.repos.push(...data)
-        this.reposPage++;
+        console.log("GETTING REPOS");
+        console.log(this.reposPage);
+        const reposReq = await this.$axios.get(`https://api.github.com/user/repos?type=all&per_page=${this.amountRequested}&page=${this.reposPage}`, { headers: { "Authorization": `token ${this.githubToken}` } });
+        console.log(reposReq);
+        console.log(reposReq.headers.link);
+        //this.repos.push(...data)
+        //this.reposPage++;
       }
       catch (e){ console.log(e) }
     },
