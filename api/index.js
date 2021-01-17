@@ -1,16 +1,12 @@
 const express = require("express");
-const app = express();
-require("./config/server.js")(app);
-//require("./config/db.js");
+const server = express();
+require("./config/server.js")(server);
 
-/*
-const websiteRoutes  = require("./routes/website/index.js");
+const database  = require("./routes/database/index.js");
 
-server.use("/", websiteRoutes);
-*/
+server.use("/database", database);
 
-console.log("lul223222222")
 module.exports = {
   path: "/api",
-  handler: app
+  handler: server
 }

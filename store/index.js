@@ -16,6 +16,8 @@ import getters 								from "./rootGetters.js";
  * INDIVIDUAL COMPONENT VUEX STUFF
  */
 
+import Database 						  	from "./Database/index.js";
+import Notification 						 from "./Notification/index.js";
 
 Vue.use(Vuex);
 
@@ -24,6 +26,8 @@ export default () => {
 		actions,
 		getters,
 		modules: {
+			Database,
+			Notification
 		},
 		mutations: {
 			...myMutations

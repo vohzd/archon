@@ -1,78 +1,64 @@
 <template>
   <section>
-    <top-toolbar></top-toolbar>
-    <nuxt class="main-view mtx" />
+    <side-toolbar></side-toolbar>
+    <nuxt class="main-view" />
   </section>
 </template>
 
-
 <script>
 
-import TopToolbar from "~/components/TopToolbar.vue";
+import Sidebar from "~/components/Sidebar.vue";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
-    "top-toolbar": TopToolbar
+    "side-toolbar": Sidebar
   },
-  methods: {
-    ...mapActions([
-      "checkCookies"
-    ])
-  },
-  async mounted(){
-    await this.checkCookies()
-  }
+  middleware: "initDB"
 };
 </script>
 
 <style lang="css">
 
-:root {
-  --orange-hex: #f1e9cf;
-  --orange-hex-darker: #8c793c;
-  --orange-r: 241;
-  --orange-g: 233;
-  --orange-b: 207;
-  --blue-hex: #258bc9;
-  --blue-r: 37;
-  --blue-g: 139;
-  --blue-b: 201;
-  --plyr-audio-control-background-hover: var(--orange-hex-darker)
+@font-face {
+    font-family: "firacode";
+    src: url("~assets/fonts/firacode.ttf");
+    font-weight: normal;
+    font-style: normal;
 }
 
 :root {
-    --text: white;
-    --link: #be7a0b;
-    --button: #753751;
+    --main: #fff;
+    --link: #9E713A;
+    --header-bg: #EBB46F;
+    --button: #EBB36E;
+    --button-lighter: #ecb875;
     --background: #232529;
+    --light-text: #fff;
+    --dark-text: #120C1C;
   }
+
 
 html,body,p,ol,ul,li,dl,dt,dd,blockquote,figure,fieldset,legend,textarea,pre,iframe,hr,h1,h2,h3,h4,h5,h6{margin:0;padding:0}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}ul{list-style:none}button,input,select,textarea{margin:0}html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}iframe{border:0}table{border-collapse:collapse;border-spacing:0}td,th{padding:0;text-align:left}
 
-@font-face {
-  font-family: "Inconsolata";
-  src: url("~static/fonts/inconsolata.ttf");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "nova";
-  src: url("~static/fonts/nova.ttf");
-  font-weight: normal;
-  font-style: normal;
-}
-
 body {
-  background: var(--background);
-  color: var(--text);
-  font-family: "Inconsolata", monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: "firacode";
   margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+  background: var(--background);
+  color: var(--light-text);
+  font-size: 18px;
+  text-shadow: 1px 1px rgba(0,0,0,0.05);
+  line-height: 1.5em;
+  position: relative;
 }
 
 pre {
-  font-family: "Inconsolata", monospace;
+  font-family: "firacode", monospace;
   line-height: 110%;
   margin: 0px;
   white-space: pre-wrap;
@@ -104,26 +90,26 @@ h2 {
 
 
 button {
-  padding: 24px;
+  padding: 16px;
   outline: none;
   border-radius: 3px;
   border: 0px;
   background: var(--button);
-  color: white;
-  font-family: "Inconsolata", monospace;
+  color: var(--dark-text);
+  font-family: "firacode", monospace;
   transition: 0.4s all;
 }
 
 
 input, textarea {
-  padding: 24px;
+  padding: 16px;
   width: 100%;
   border-radius: 3px;
   outline: none;
   border: 0px;
   background: rgba(255, 255, 255, 0.05);
-  color: white;
-  font-family: "Inconsolata", monospace;
+  color: var(--light-text);
+  font-family: "firacode", monospace;
   transition: 0.4s all;
 }
 
@@ -138,17 +124,22 @@ textarea {
 
 button[disabled] {
   background: rgba(164, 55, 116, 0.04);
+  color: rgba(255, 255, 255, 0.14);
+}
+
+button[disabled]:hover {
+  cursor: not-allowed;
 }
 
 button:hover:not(:disabled) {
   cursor: pointer;
-  box-shadow: inset 0 0 8px 32px rgba(0, 0, 0, 0.25);
-
+  opacity: 0.7;
 }
 
 button::-moz-focus-inner {
   border: 0;
 }
+
 
 .relative {
   position: relative;
@@ -156,8 +147,8 @@ button::-moz-focus-inner {
 
 .main-view {
   margin: auto;
-  width: 50%;
   height: 100vh;
+  margin-left: 256px;
 }
 
 .mt {
@@ -295,11 +286,16 @@ button::-moz-focus-inner {
   flex: 1;
 }
 
-  .grid {
-    display: grid;
-    grid-column-gap: 32px;
-    grid-template-columns: 1fr 1fr;
-  }
+.grid {
+  display: grid;
+  grid-column-gap: 32px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.input-grid {
+  display: grid;
+  grid-template-columns: 9fr 1fr;
+}
 
 
   .lds-ellipsis div {
@@ -352,21 +348,25 @@ button::-moz-focus-inner {
      }
   }
 
-  .main-logo {
-    font-family: "nova";
-    font-size: 256px;
-    text-align: center;
+  .input-grid input{
+    border: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
   }
 
+  .input-grid  .secondary-button {
+    border: 0px;
+    background: rgba(164, 55, 116, 0.24);
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    color: var(--light-text);
+  }
 
 @media (max-width: 1600px) {
   .main-view {
     width: 80%;
   }
 
-  .main-logo {
-    font-size: 196px;
-  }
 
 }
 
@@ -377,8 +377,5 @@ button::-moz-focus-inner {
     margin-right: 2%;
   }
 
-  .main-logo {
-    font-size: 128px;
-  }
 }
 </style>

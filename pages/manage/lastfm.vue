@@ -1,5 +1,25 @@
 <template>
-  <main class="center">
+  <main>
+
+    <div class="c50">
+      <h2>Lastfm sync</h2>
+
+      <div class="row mt">
+        <h4>Add a new user</h4>
+        <div class="input-grid row mt">
+          <input placeholder="lastfm username" v-model="newUser" />
+          <button class="secondary-button" @click="addNewUser">+</button>
+        </div>
+      </div>
+
+      <div class="row mtx">
+        <h4>Users</h4>
+        <div class="">
+          no users... add one above
+        </div>
+      </div>
+    </div>
+    <!--
     <section >
       <h2>Export your last.fm tracks</h2>
       <p>hint, try mine... <code>vohzd</code></p>
@@ -17,15 +37,49 @@
         <div v-for="track in tracks.slice().reverse()" class="track">
           <span v-if="track.artist">{{ track.artist["#text"] }} - </span>
           <span v-if="track.name">{{ track.name }}</span>
-          <!--<span v-if="track.album">{{ track.album["#text"] }}</span>-->
+          <span v-if="track.album">{{ track.album["#text"] }}</span>
           <span v-if="track.date" class="tiny">({{ track.date["#text"] }})</span>
         </div>
       </div>
-    </section>
+    </section>-->
   </main>
 </template>
 
 <script>
+
+import { mapActions, mapGetters } from "vuex";
+
+export default {
+  computed: {
+    ...mapGetters([
+      "db"
+    ])
+  },
+  data(){
+    return {
+      newUser: null
+    }
+  },
+  methods: {
+    addNewUser(){
+      if (!this.newUser) return;
+
+
+      console.log(this.newUser);
+
+    },
+    init(){
+      console.log("method: init")
+    }
+  },
+  mounted(){
+    console.log("mounting...")
+    //this.init();
+  }
+}
+
+
+/*
 	export default {
     data(){
       return {
@@ -79,7 +133,7 @@
           let res = await this.$axios.get(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${this.user}&api_key=3329fbd5c9a9642aac2144cff8dc183a&format=json&limit=200&page=${this.currentPage}`);
 
           // Loved tracks only
-          //let res = await this.$axios.get(`https://ws.audioscrobbler.com/2.0/?method=user.getlovedtracks&user=${this.user}&api_key=3329fbd5c9a9642aac2144cff8dc183a&format=json&limit=200&page=${this.currentPage}`);
+          let res = await this.$axios.get(`https://ws.audioscrobbler.com/2.0/?method=user.getlovedtracks&user=${this.user}&api_key=3329fbd5c9a9642aac2144cff8dc183a&format=json&limit=200&page=${this.currentPage}`);
 
           if (!this.numPages){
             this.numPages = parseInt(res.data.recenttracks["@attr"].totalPages);
@@ -92,7 +146,7 @@
         }
       }
     }
-	}
+	}*/
 </script>
 
 <style>

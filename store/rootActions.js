@@ -5,7 +5,7 @@ export default {
   async checkCookies({ commit, dispatch }){
     try {
       console.log("88888888888888888888888888888888888" );
-      let { data } = await this.$axios.post(`${this.getters.authServerEndpoint}/oauth/decode-token`, {}, { withCredentials: true });
+      let { data } = await this.$axios.post(`${this.getters.authServerEndpoint}/api/oauth/decode-token`, {}, { withCredentials: true });
       //et { data } = await this.$axios.post(`${this.getters.authServerEndpoint}/oauth/decode-token`, {}, { withCredentials: true });
 
       data.accounts.forEach((account, i) => {

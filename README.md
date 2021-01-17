@@ -1,4 +1,4 @@
-# archon
+# Curator
 
 intended to run without a _proper_ database (just writes to a .json file);
 
