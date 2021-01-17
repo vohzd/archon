@@ -2,9 +2,6 @@
   <section>
     <side-toolbar></side-toolbar>
     <nuxt class="main-view" />
-    <div class="">
-      {{ accounts }}
-    </div>
   </section>
 </template>
 

@@ -1,6 +1,5 @@
 export default () =>  {
   return {
-    accounts: "why",
-    wat: "wtf"
+    accounts: null
   }
 }
