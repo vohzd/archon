@@ -29,8 +29,6 @@
       </div>
     </div>
 
-
-
     <div class="available-website pad">
       <div class="row">
         <img src="~/assets/img/spotify.png" />
@@ -111,17 +109,16 @@ export default {
     grid-column-gap: 16px;
     grid-row-gap: 16px;
     grid-template-columns: repeat(4, auto);
-    grid-template-rows: repeat(4, 15vh);
+    grid-template-rows: repeat(4, 25vh);
   }
 
   .available-website  {
     background: rgba(255,255,255,0.02);
     margin-bottom: 8px;
     border-radius: 8px;
-    height: 15vh;
+    height: 25vh;
     position: relative;
   }
-
 
 
   .available-websites img {

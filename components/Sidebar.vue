@@ -2,7 +2,9 @@
   <span class="sidebar">
 
     <div class="row">
-      <site-logo></site-logo>
+      <nuxt-link to="/">
+        <site-logo></site-logo>
+      </nuxt-link>
     </div>
 
     <div class="mtx notifications">

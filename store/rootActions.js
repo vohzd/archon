@@ -2,6 +2,12 @@ import getters 				  						from "./rootGetters.js";
 import state 				    						from "./rootState.js";
 
 export default {
+  nuxtServerInit({ commit, dispatch }, { req }){
+    console.log("nuxtServerInit: BOOTSTRAPPING APP");
+    dispatch("initDB")
+  },
+
+  /*
   async checkCookies({ commit, dispatch }){
     try {
       console.log("88888888888888888888888888888888888" );
@@ -20,7 +26,6 @@ export default {
       dispatch("setNotification", e.response.data.reason);
     }
   },
-  /*
   async linkAccount({}, payload){
     try {
       console.log("TESTESTETSETSETST");
@@ -31,8 +36,8 @@ export default {
       console.log(data);
     }
     catch (e) { console.log(e); }
-  },*/
+  },
   async setToken({ commit, dispatch }, payload){
     commit("SET_TOKEN", payload);
-  }
+  }*/
 };

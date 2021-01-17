@@ -13,8 +13,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
     "side-toolbar": Sidebar
-  },
-  middleware: "initDB"
+  }
 };
 </script>
 

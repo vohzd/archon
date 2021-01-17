@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="pad">
 
     <div class="c50">
       <h2>Lastfm sync</h2>
@@ -7,8 +7,8 @@
       <div class="row mt">
         <h4>Add a new user</h4>
         <div class="input-grid row mt">
-          <input placeholder="lastfm username" v-model="newUser" />
-          <button class="secondary-button" @click="addNewUser">+</button>
+          <input placeholder="lastfm username" v-model="newAccountName" />
+          <button class="secondary-button" @click="addNewAccount">+</button>
         </div>
       </div>
 
@@ -57,25 +57,26 @@ export default {
   },
   data(){
     return {
-      newUser: null
+      newAccountName: null
     }
   },
   methods: {
-    addNewUser(){
-      if (!this.newUser) return;
+    ...mapActions([
+      "addAccount"
+    ]),
+    addNewAccount(){
+      if (!this.newAccountName) return;
 
-
-      console.log(this.newUser);
+      this.addAccount({
+        accountName: this.newAccountName,
+        website: "lastfm"
+      })
 
     },
     init(){
       console.log("method: init")
     }
   },
-  mounted(){
-    console.log("mounting...")
-    //this.init();
-  }
 }
 
 

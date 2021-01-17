@@ -1,6 +1,6 @@
 module.exports = {
   axios: {
-    baseURL: "/",
+    baseURL: "http://localhost:3000",
     proxyHeaders: true,
     credentials: true
   },
@@ -19,7 +19,7 @@ module.exports = {
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { hid: "description", name: "description", content: "Curator" },
-      { hid: "identifier-url", name: "identifier-url", content: "https://Curator.vohzd.com" },
+      { hid: "identifier-url", name: "identifier-url", content: "https://curator.vohzd.com" },
       { hid: "title", name: "title", content: "Curator" },
       { hid: "abstract", name: "abstract", content: "Curator" },
       { hid: "description", name: "description", content: "Curator" },
