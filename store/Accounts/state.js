@@ -1,5 +1,6 @@
 export default () =>  {
   return {
-    db: null
+    accounts: "why",
+    wat: "wtf"
   }
 }

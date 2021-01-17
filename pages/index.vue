@@ -1,7 +1,5 @@
 <template lang="html">
-
   <div class="available-websites pad">
-
     <div class="available-website pad">
       <div class="row">
         <img src="~/assets/img/deezer.png" />
@@ -90,12 +88,14 @@
 
 <script>
 
-import { mapActions, mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   computed: {
     ...mapGetters([
-      "githubToken"
+      "accounts",
+      "githubToken",
+      "wat"
     ])
   }
 }

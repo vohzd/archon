@@ -14,9 +14,7 @@
 
       <div class="row mtx">
         <h4>Users</h4>
-        <div class="">
-          no users... add one above
-        </div>
+        {{ accounts }}
       </div>
     </div>
     <!--
@@ -52,7 +50,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters([
-      "db"
+      "accounts"
     ])
   },
   data(){
@@ -71,12 +69,10 @@ export default {
         accountName: this.newAccountName,
         website: "lastfm"
       })
-
-    },
-    init(){
-      console.log("method: init")
     }
   },
+  mounted(){
+  }
 }
 
 

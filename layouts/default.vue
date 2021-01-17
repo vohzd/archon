@@ -2,6 +2,9 @@
   <section>
     <side-toolbar></side-toolbar>
     <nuxt class="main-view" />
+    <div class="">
+      {{ accounts }}
+    </div>
   </section>
 </template>
 
@@ -13,6 +16,11 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
     "side-toolbar": Sidebar
+  },
+  computed: {
+    ...mapGetters([
+      "accounts"
+    ])
   }
 };
 </script>

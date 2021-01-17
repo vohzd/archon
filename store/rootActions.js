@@ -2,10 +2,7 @@ import getters 				  						from "./rootGetters.js";
 import state 				    						from "./rootState.js";
 
 export default {
-  nuxtServerInit({ commit, dispatch }, { req }){
-    console.log("nuxtServerInit: BOOTSTRAPPING APP");
-    dispatch("initDB")
-  },
+
 
   /*
   async checkCookies({ commit, dispatch }){

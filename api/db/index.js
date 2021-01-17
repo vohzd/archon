@@ -11,6 +11,8 @@ const dataPath = `${ path.resolve() }/data/`;
 const fileName = `${dataPath}/db.json`;
 
 async function get(){
+  console.log("db: get")
+
   if (!await exists(fileName)){ await writeFile(fileName, JSON.stringify({})) }
   return await readFile(fileName, "utf-8");
 
@@ -36,6 +38,8 @@ async function get(){
 }
 
 async function modify(key, value){
+
+  console.log("db: modify")
   let file = JSON.parse(await readFile(fileName, "utf-8"));
   // build an initial state if it's the first one...
   if (!file[key]){ file[key] = [ value ] }
