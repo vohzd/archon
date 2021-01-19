@@ -21,7 +21,7 @@ router.post("/", async (req, res, next) => {
   console.log("route: POST /database/account")
   try {
     const key = req.body.website;
-    const value = req.body.accountName;
+    const value = req.body.username;
     await modifyAccounts(key, value);
     return res.send({ message: "hello" });
   }

@@ -6,14 +6,17 @@ export default {
     console.log("action: addAccount");
 
     let { data } = await this.$axios.post(`/api/account`, {
-      accountName: payload.accountName,
+      username: payload.username,
       website: payload.website
     });
+
+    dispatch("getAccounts");
 
   },
   async getAccounts({ commit, dispatch }){
     console.log("action: getAccounts")
     let { data } = await this.$axios.get(`/api/account/`);
-    commit("SET_ACCOUNTS", data);
+    const asObj = JSON.parse(data)
+    commit("SET_ACCOUNTS", asObj.accounts);
   }
 }

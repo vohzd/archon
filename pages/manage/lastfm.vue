@@ -7,14 +7,16 @@
       <div class="row mt">
         <h4>Add a new user</h4>
         <div class="input-grid row mt">
-          <input placeholder="lastfm username" v-model="newAccountName" />
+          <input placeholder="lastfm username" v-model="newUsername" />
           <button class="secondary-button" @click="addNewAccount">+</button>
         </div>
       </div>
 
       <div class="row mtx">
         <h4>Users</h4>
-        {{ accounts }}
+        <ul>
+          <li v-for="account in accounts('last.fm').linkedAccounts" class="medium"> {{ account }} </li>
+        </ul>
       </div>
     </div>
     <!--
@@ -51,11 +53,11 @@ export default {
   computed: {
     ...mapGetters([
       "accounts"
-    ])
+    ]),
   },
   data(){
     return {
-      newAccountName: null
+      newUsername: null
     }
   },
   methods: {
@@ -63,11 +65,11 @@ export default {
       "addAccount"
     ]),
     addNewAccount(){
-      if (!this.newAccountName) return;
+      if (!this.newUsername) return;
 
       this.addAccount({
-        accountName: this.newAccountName,
-        website: "lastfm"
+        username: this.newUsername,
+        website: "last.fm"
       })
     }
   },
