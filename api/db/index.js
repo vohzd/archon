@@ -42,39 +42,53 @@ async function get(){
   return "123"*/
 }
 
+async function append(file, obj){
+  return file.push(obj)
+}
+
 async function modify(key, value){
 
   console.log("db: modify")
 
   console.log(key)
-  console.log(value)
-
+  console.log(value);
   let file = JSON.parse(await readFile(fileName, "utf-8"));
 
+  // create a brand spanking new file
   if (file.accounts.length === 0){
-    file.accounts.push({
+    file = append(file, {
       website: key,
       linkedAccounts: [ value ]
-    });
+    })
   }
 
-  else {
-    console.log("append if ONLY unique.......")
+  let foundIndex = 0;
+  let arrCopy = file.accounts.find((v, i) => {
+    foundIndex = i;
+    return v.website === key;
+  });
 
-    let foundIndex = 0;
-    const arrCopy = file.accounts.find((v, i) => {
-      foundIndex = i;
-      return v.website === key;
-    });
-
-    const exists = arrCopy.linkedAccounts.includes(value);
-
-    // append ONLY if unique
-    if (!exists){
-      file.accounts[foundIndex].linkedAccounts.push(value);
-    }
-
+  // this means you've passed a brand new nested property!
+  if (!arrCopy){
+    file = append(file, {
+      website: key,
+      linkedAccounts: [ value ]
+    })
   }
+
+  console.log("did we find something?!")
+  console.log(arrCopy)
+
+  const exists = arrCopy.linkedAccounts.includes(value);
+
+
+
+  // append ONLY if unique
+  if (!exists){
+    file.accounts[foundIndex].linkedAccounts.push(value);
+  }
+
+
 
   console.log(file)
 
