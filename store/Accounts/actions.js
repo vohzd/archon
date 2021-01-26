@@ -18,6 +18,6 @@ export default {
 
     console.log(data);
     //const asObj = JSON.parse(data)
-    //commit("SET_ACCOUNTS", asObj.accounts);
+    commit("SET_ACCOUNTS", data);
   }
 }

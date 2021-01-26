@@ -7,8 +7,7 @@ const account                             = require("../../services/account/inde
 router.get("/", async (req, res, next) => {
   console.log("route: GET /database")
   try {
-    const accounts = await account.get();
-    return res.json(accounts);
+    return res.json(await account.get());
   }
   catch (e){ return errorHandler(res, e); }
 });

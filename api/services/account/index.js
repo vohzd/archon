@@ -14,9 +14,7 @@ const accounts = {
 
   async get(query){
     console.log("service: account.get()");
-    const all = await db.find({})
-    console.log(all);
-    return "HELLO";
+    return await db.find({});
   },
 
 

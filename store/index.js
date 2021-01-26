@@ -18,6 +18,7 @@ import getters 								from "./rootGetters.js";
 
 import Accounts 						  	from "./Accounts/index.js";
 import Notification 						from "./Notification/index.js";
+import Sync 								from "./Sync/index.js";
 
 Vue.use(Vuex);
 
@@ -27,7 +28,8 @@ export default () => {
 		getters,
 		modules: {
 			Accounts,
-			Notification
+			Notification,
+			Sync
 		},
 		mutations: {
 			...myMutations

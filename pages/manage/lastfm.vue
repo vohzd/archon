@@ -1,7 +1,7 @@
 <template>
   <main class="pad">
 
-    <div class="c50">
+    <div class="row">
       <h2>Lastfm sync</h2>
 
       <div class="row mt">
@@ -15,13 +15,18 @@
       <div class="row mtx">
         <h4>Users</h4>
 
-        <!--
-
-        {{ accounts("chex.com") }}
-
-        <ul>
-          <li v-for="account in accounts('last.fm').linkedAccounts" class="medium"> {{ account }} </li>
-        </ul>-->
+        <div class="sync-grid mt">
+          <div class="sync-grid-item">
+            <div class="">username</div>
+            <div class="">last sync'd</div>
+            <div class="">delete</div>
+          </div>
+          <div v-for="account in accounts('last.fm')" class="medium sync-grid-item">
+            <div>{{ account.username }}</div>
+            <div class="">never (<a @click="sync(account.username)">sync?</a>)</div>
+            <div class="">x</div>
+          </div>
+        </div>
       </div>
     </div>
     <!--
@@ -67,7 +72,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      "addAccount"
+      "addAccount",
+      "syncDB"
     ]),
     addNewAccount(){
       if (!this.newUsername) return;
@@ -75,6 +81,17 @@ export default {
       this.addAccount({
         username: this.newUsername,
         website: "last.fm"
+      })
+    },
+    async sync(username){
+      console.log("HELLO");
+      console.log(username);
+
+      let { data } = await this.$axios.get(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${username}&api_key=3329fbd5c9a9642aac2144cff8dc183a&format=json&limit=4&page=1`);
+
+      this.syncDB({
+        "website": "last.fm",
+        "tracks": data.recenttracks
       })
     }
   },
@@ -166,11 +183,15 @@ export default {
   }
   .exported-tracks .track{
     padding: 16px;
-
     border-bottom: 1px solid #000;
   }
   .tiny {
     font-size: 0.8em;
+  }
+
+  .sync-grid-item {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr;
   }
 
 </style>
