@@ -1,5 +1,5 @@
 export default () =>  {
   return {
-    accounts: null
+    accounts: {}
   }
 }

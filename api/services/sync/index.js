@@ -16,14 +16,8 @@ const accounts = {
 
     const db = nedb.create(`${ path.resolve() }/data/${filenamify(website)}.db`);
 
-
     console.log(data);
     return await db.insert(data)
-
-
-
-
-
 
   }
 
