@@ -2,19 +2,19 @@ const express                             = require("express");
 const { errorHandler }                    = require("../../helpers/errorHandler.js");
 const router                              = express.Router();
 
-const account                             = require("../../services/account/index.js");
-const sync                                = require("../../services/sync/index.js");
+const { collection }                      = require("../../db/index.js");
+const accountsCol                         = collection("accounts");
+const lastfmCol                           = collection("lastfm");
 
 router.post("/", async (req, res) => {
   console.log("route: POST /sync")
   console.log(req.body);
   try {
 
+    console.log("BODY HERE");
     console.log(req.body);
 
-    account.update(req.body.accountID, {
-      lastUpdated: Date.now()
-    });
+    accountsCol.update("something")
     //sync.update(req.body.website, req.body.tracks)
 
     return res.send(true);

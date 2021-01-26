@@ -23,7 +23,7 @@
           </div>
           <div v-for="account in accounts('last.fm')" class="medium sync-grid-item">
             <div>{{ account.username }}</div>
-            <div class="">never (<a @click="sync(account.username, account._id)">sync?</a>)</div>
+            <div class="">never (<a @click="sync(account)">sync?</a>)</div>
             <div class="">x</div>
           </div>
         </div>
@@ -83,12 +83,11 @@ export default {
         website: "last.fm"
       })
     },
-    async sync(username, accountID){
+    async sync(account){
       console.log("HELLO");
-      console.log(username);
+      console.log(account);
 
-      let { data } = await this.$axios.get(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${username}&api_key=3329fbd5c9a9642aac2144cff8dc183a&format=json&limit=4&page=1`);
-
+      let { data } = await this.$axios.get(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${account.username}&api_key=3329fbd5c9a9642aac2144cff8dc183a&format=json&limit=4&page=1`);
 
       /*
       this.syncDB({
@@ -96,10 +95,7 @@ export default {
         "tracks": data.recenttracks
       })*/
 
-
-      this.syncDB({
-        accountID
-      })
+      this.syncDB(account)
 
 
     }

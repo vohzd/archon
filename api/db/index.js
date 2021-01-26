@@ -10,6 +10,8 @@ const writeFile = util.promisify(fs.writeFile);
 const dataPath = `${ path.resolve() }/data`;
 
 
+const id = require("../helpers/id.js");
+
 /* INTERNAL FILE I/O */
 async function _get(fileName){
   const exists = await fileExists(fileName);
@@ -41,7 +43,13 @@ export function collection(name){
       return await _get(fileName);
     },
     async put(data){
-      return await _append(fileName, data)
+
+      console.log(id.gen());
+      return await _append(fileName, { id: id.gen(), ...data })
+    },
+    async update(data){
+      console.log("update");
+      console.log(data);
     }
   }
 }
