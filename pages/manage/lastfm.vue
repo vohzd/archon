@@ -15,11 +15,13 @@
       <div class="row mtx">
         <h4>Users</h4>
 
+        <!--
+
         {{ accounts("chex.com") }}
 
         <ul>
           <li v-for="account in accounts('last.fm').linkedAccounts" class="medium"> {{ account }} </li>
-        </ul>
+        </ul>-->
       </div>
     </div>
     <!--
@@ -72,7 +74,7 @@ export default {
 
       this.addAccount({
         username: this.newUsername,
-        website: "ass.com"
+        website: "last.fm"
       })
     }
   },

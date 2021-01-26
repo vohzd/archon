@@ -1,20 +1,26 @@
-import db from "../../db/index.js";
+//import db from "../../db/index.js";
 
-async function getAccounts(query){
-  const data = db.get();
-  return data;
+import path from "path";
+
+const nedb = require("nedb-promises");
+const db = nedb.create(`${ path.resolve() }/data/accounts.db`);
+
+const accounts = {
+
+  async add(website, username){
+    db.insert({ website, username})
+    return "HELLO"
+  },
+
+  async get(query){
+    console.log("service: account.get()");
+    const all = await db.find({})
+    console.log(all);
+    return "HELLO";
+  },
+
+
 }
 
-async function modifyAccounts(key, value){
-  console.log("service: modifyAccount")
-  console.log(key)
-  console.log(value)
-  const result = await db.modify(key, value);
-  console.log(result);
-  return result
-}
 
-module.exports = {
-  getAccounts,
-  modifyAccounts
-};
+module.exports = accounts;
