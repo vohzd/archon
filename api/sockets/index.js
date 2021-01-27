@@ -1,17 +1,24 @@
 
-/* DEPS */
 const WebSocket                         = require("ws");
 const wss                               = new WebSocket.Server({ noServer: true })
 
+
+/* not needed as of yet
 const {
   archiveGH
 }                                       = require("../services/github/index.js");
+*/
 
-
-/* CALL METHODS */
+/* INSTANTIATION */
 wss.on("connection", ws => {
   ws.on("message", message => {
-    handleMessage(message, ws);
+
+    console.log("function: handleMessage");
+    const decoded = JSON.parse(message);
+
+    console.log(ws);
+    console.log(decoded);
+
   })
   /* send something back to the client
   ws.send(JSON.stringify({
@@ -19,16 +26,6 @@ wss.on("connection", ws => {
   })) */
 });
 
-
-/* METHODS */
-function handleMessage(message, ws){
-  const decoded = JSON.parse(message);
-  if (decoded.type === "sync-github"){
-    archiveGH(decoded.data, ws);
-    //ws.send("RECEIVED REQUEST FOR GITHUB")
-  }
-
-}
 
 /* CREATE THE SERVER AND COMBINE IT WITH NUXT */
 export default function () {

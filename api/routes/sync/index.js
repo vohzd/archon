@@ -10,11 +10,10 @@ router.post("/", async (req, res) => {
   console.log("route: POST /sync")
   console.log(req.body);
   try {
+    //let { data } = await this.$axios.get(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${account.username}&api_key=3329fbd5c9a9642aac2144cff8dc183a&format=json&limit=4&page=1`);
 
-    console.log("BODY HERE");
-    console.log(req.body);
 
-    accountsCol.update("something")
+    //accountsCol.update("something")
     //sync.update(req.body.website, req.body.tracks)
 
     return res.send(true);

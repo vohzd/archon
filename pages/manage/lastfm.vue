@@ -19,11 +19,13 @@
           <div class="sync-grid-item">
             <div class="">username</div>
             <div class="">last sync'd</div>
+            <div class="">status</div>
             <div class="">delete</div>
           </div>
           <div v-for="account in accounts('last.fm')" class="medium sync-grid-item">
             <div>{{ account.username }}</div>
-            <div class="">never (<a @click="sync(account)">sync?</a>)</div>
+            <div class="">{{ account.lastSync }} (<a @click="handleSync(account)">sync?</a>)</div>
+            <div class="">waiting...</div>
             <div class="">x</div>
           </div>
         </div>
@@ -40,7 +42,7 @@
       <div v-if="numPages">
         <p>Downloaded {{ currentPage }} / {{ numPages }} pages.</p>
         <p>Downloaded {{ trackDownloadProgress }} / {{ numTracks }} tracks!</p>
-      </div>
+      </div>[{"id":"2FixyZrNjCj","username":"vohzd","website":"last.fm","lastSync":1
     </section>
     <section >
       <div v-if="tracks" class="exported-tracks">
@@ -67,41 +69,42 @@ export default {
   },
   data(){
     return {
-      newUsername: null
+      newUsername: null,
+      socketConnection: null
     }
   },
   methods: {
     ...mapActions([
       "addAccount",
-      "syncDB"
+      "sync"
     ]),
     addNewAccount(){
       if (!this.newUsername) return;
-
       this.addAccount({
         username: this.newUsername,
         website: "last.fm"
       })
     },
-    async sync(account){
-      console.log("HELLO");
-      console.log(account);
+    async createSocket(){
+      return new Promise((resolve, reject) => {
+        this.socketConnection = new WebSocket("ws://localhost:3000");
+        this.socketConnection.onopen = (event) => resolve();
+        this.socketConnection.onerror = (err) => reject(err);
+      });
+    },
+    async handleSync(account){
+      if (!this.socketConnection){
+        await this.createSocket();
+      }
 
-      let { data } = await this.$axios.get(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${account.username}&api_key=3329fbd5c9a9642aac2144cff8dc183a&format=json&limit=4&page=1`);
+      const data = JSON.stringify({
+        "yes": "something",
+        "no": "whynot"
+      })
 
-      /*
-      this.syncDB({
-        "website": "last.fm",
-        "tracks": data.recenttracks
-      })*/
-
-      this.syncDB(account)
-
-
+      this.socketConnection.send(data);
     }
   },
-  mounted(){
-  }
 }
 
 
@@ -138,7 +141,8 @@ export default {
               this.trackDownloadProgress += 2;
             }, 2);
             setTimeout(() => {
-              clearInterval(countup)
+              clearInterval(countup)            <div class="">delete</div>
+
             }, 1500);
           }
           await this.retreiveTracks();
@@ -196,7 +200,7 @@ export default {
 
   .sync-grid-item {
     display: grid;
-    grid-template-columns: 3fr 1fr 1fr;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
   }
 
 </style>

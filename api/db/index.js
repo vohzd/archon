@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import util from "util";
+import id from "../helpers/id.js";
 
 const fileExists = util.promisify(fs.exists);
 const getDir = util.promisify(fs.readdir);
@@ -8,9 +9,6 @@ const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
 
 const dataPath = `${ path.resolve() }/data`;
-
-
-const id = require("../helpers/id.js");
 
 /* INTERNAL FILE I/O */
 async function _get(fileName){
@@ -31,11 +29,11 @@ async function _append(fileName, data){
 }
 
 
-
-
 /* PUBLIC API */
 export function collection(name){
+
   console.log(`init ${name}`);
+
   const fileName = `${dataPath}/${name}.json`;
 
   return {
@@ -43,8 +41,6 @@ export function collection(name){
       return await _get(fileName);
     },
     async put(data){
-
-      console.log(id.gen());
       return await _append(fileName, { id: id.gen(), ...data })
     },
     async update(data){

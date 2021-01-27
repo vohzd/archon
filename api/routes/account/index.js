@@ -16,20 +16,15 @@ router.get("/", async (req, res, next) => {
 
 
 router.post("/", async (req, res) => {
-  console.log("route: POST /database/account")
+  console.log("route: POST /account")
   console.log(req.body);
+  const username = req.body.username;
+  const website = req.body.website;
+  const lastSync = Date.now();
+
   try {
-
-    const newRec = await accounts.put(req.body);
-
-    //const col = await collection.put("accounts", req.body);
-
-    //const newOne = await accounts.put(req.body);
-
-    console.log(newRec);
-
-    return res.send({ success: true });
-    //return res.send(await account.add(req.body.website, req.body.username));
+    const newAccount = await accounts.put({ username, website, lastSync });
+    return res.send(newAccount);
   }
   catch (e){ return errorHandler(res, e); }
 });

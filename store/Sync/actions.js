@@ -2,10 +2,10 @@ import state 												from "./state.js";
 
 
 export default {
-  async syncDB({ commit, dispatch }, payload){
-    console.log("action: syncDB")
-    console.log(payload);
-    let { data } = await this.$axios.post(`/api/sync/`, payload);
+  async sync({ commit, dispatch }, account){
+    console.log("action: sync")
+    console.log(account);
+    let { data } = await this.$axios.post(`/api/sync/`, account);
     console.log(data);
   }
 }

@@ -366,19 +366,11 @@ button::-moz-focus-inner {
     color: var(--light-text);
   }
 
-@media (max-width: 1600px) {
-  .main-view {
-    width: 80%;
-  }
 
-
-}
 
 @media (max-width: 1000px) {
   .main-view {
-    width: 96%;
-    margin-left: 2%;
-    margin-right: 2%;
+    width: calc(75% - 64px);
   }
 
 }
