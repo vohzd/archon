@@ -22,10 +22,10 @@
             <div class="">status</div>
             <div class="">delete</div>
           </div>
-          <div v-for="account in accounts('last.fm')" class="medium sync-grid-item">
+          <div v-for="(account, i) in accounts('last.fm')" class="medium sync-grid-item">
             <div>{{ account.username }}</div>
-            <div class="">{{ account.lastSync }} (<a @click="handleSync(account)">sync?</a>)</div>
-            <div class="">waiting...</div>
+            <div class="">{{ account.lastSync }} (<a @click="handleSync(account, i)">sync?</a>)</div>
+            <div class="">{{ statuses[i] }}</div>
             <div class="">x</div>
           </div>
         </div>
@@ -59,6 +59,7 @@
 
 <script>
 
+import Vue from "vue";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -70,7 +71,8 @@ export default {
   data(){
     return {
       newUsername: null,
-      socketConnection: null
+      socketConnection: null,
+      statuses: []
     }
   },
   methods: {
@@ -92,17 +94,21 @@ export default {
         this.socketConnection.onerror = (err) => reject(err);
       });
     },
-    async handleSync(account){
+    async handleSync(account, i){
+
+      Vue.set(this.statuses, i, "bootstrapping");
+
       if (!this.socketConnection){
         await this.createSocket();
       }
 
-      const data = JSON.stringify({
-        "yes": "something",
-        "no": "whynot"
-      })
+      Vue.set(this.statuses, i, "connection established");
 
-      this.socketConnection.send(data);
+      this.socketConnection.send(JSON.stringify(account));
+
+      this.socketConnection.onmessage = (message) => {
+        Vue.set(this.statuses, i, message.data);
+      };
     }
   },
 }
@@ -200,7 +206,7 @@ export default {
 
   .sync-grid-item {
     display: grid;
-    grid-template-columns: 3fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 2fr 2fr 1fr;
   }
 
 </style>

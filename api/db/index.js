@@ -12,14 +12,32 @@ const dataPath = `${ path.resolve() }/data`;
 
 /* INTERNAL FILE I/O */
 async function _get(fileName){
+  console.log("get called");
+  console.log(fileName);
   const exists = await fileExists(fileName);
+
+
+  /*
+  if (!fs.existsSync(path)){
+    fs.mkdirSync(path)
+    fs.mkdirSync(`${path}/repos`)
+  }*/
+
   if (!exists){
+    console.log("DOESNT EXIST");
+    //fs.mkdirSync(fileName)
+    //const actualFilename = fileName.split("/")[fileName.split("/").length - 1];
+    //console.log(actualFilename);
+    //await fs.mkdir(fileName, { recursive: true }, JSON.stringify([]))
     await writeFile(fileName, JSON.stringify([]))
+
   };
   return await readFile(fileName, "utf-8");
 }
 
 async function _append(fileName, data){
+  console.log("append caalled");
+  console.log(fileName);
   let file = JSON.parse(await _get(fileName));
 
   // todo, unique ids...
