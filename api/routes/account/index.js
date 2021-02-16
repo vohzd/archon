@@ -9,11 +9,14 @@ const accounts                            = collection("accounts");
 router.get("/", async (req, res, next) => {
   console.log("route: GET /account")
   try {
+    console.log("hello3");
+    console.log(await accounts.get());
+    //const all = await accounts.get();
+    //console.log(all);
     return res.json(await accounts.get())
   }
   catch (e){ return errorHandler(res, e); }
 });
-
 
 router.post("/", async (req, res) => {
   console.log("route: POST /account")

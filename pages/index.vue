@@ -53,7 +53,7 @@
           <img src="~/assets/img/youtube.png"  />
         </div>
         <div class="row center mt">
-          <nuxt-link to="/manage/lastfm"><button>Manage</button></nuxt-link>
+          <nuxt-link to="/manage/youtube"><button>Manage</button></nuxt-link>
         </div>
       </div>
 
