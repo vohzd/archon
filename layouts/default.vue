@@ -72,6 +72,8 @@ a {
   letter-spacing: 3px;
   text-decoration: none;
   color: var(--link);
+  width: inherit;
+  display: inline-block;
 }
 
 a:focus {
@@ -81,7 +83,7 @@ a:focus {
 a:active,
 a:hover {
     outline: 0;
-    opacity: 0.7;
+    color: var(--light-text);
 }
 
 h1 {
@@ -98,14 +100,15 @@ button {
   outline: none;
   border-radius: 3px;
   border: 0px;
+  width: inherit;
   background: var(--button);
   color: var(--dark-text);
   font-family: "firacode", monospace;
-  transition: 0.4s all;
+  transition: 0.6s all;
 }
 
 
-input, textarea {
+input, textarea, .input-field {
   padding: 16px;
   width: 100%;
   border-radius: 3px;
@@ -137,13 +140,19 @@ button[disabled]:hover {
 
 button:hover:not(:disabled) {
   cursor: pointer;
-  opacity: 0.7;
 }
 
 button::-moz-focus-inner {
   border: 0;
 }
 
+
+a button:hover:not(:disabled) {
+  cursor: pointer;
+  background: rgba(164, 55, 116, 0.34);
+  border-radius: 0px;
+  color: white;
+}
 
 .relative {
   position: relative;
@@ -152,7 +161,8 @@ button::-moz-focus-inner {
 .main-view {
   margin: auto;
   height: 100vh;
-  margin-left: 256px;
+  width: 88%;
+  margin-left: 12%;
 }
 
 .mt {
@@ -239,6 +249,12 @@ button::-moz-focus-inner {
   right: 0;
 }
 
+.absolute-bottom-left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
 .nuxt-link-exact-active {
   opacity: 0.33;
 }
@@ -301,70 +317,114 @@ button::-moz-focus-inner {
   grid-template-columns: 9fr 1fr;
 }
 
+.editor-button {
+  width: auto;
+  border: none;
+  padding: 3px;
+  min-width: 48px;
+  min-height: 36px;
+  text-align: center;
+  border-radius: 0px;
+  font-size: 12px;
+  background: none;
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.35);
+}
 
-  .lds-ellipsis div {
-      position: absolute;
-      top: 1px;
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: rgba(0,0,0,0.15);
-      animation-timing-function: cubic-bezier(0, 1, 1, 0);
-  }
-  .lds-ellipsis div:nth-child(1) {
-      left: 6px;
-      animation: lds-ellipsis1 0.6s infinite;
-  }
-  .lds-ellipsis div:nth-child(2) {
-      left: 6px;
-      animation: lds-ellipsis2 0.6s infinite;
-  }
-  .lds-ellipsis div:nth-child(3) {
-      left: 26px;
-      animation: lds-ellipsis2 0.6s infinite;
-  }
-  .lds-ellipsis div:nth-child(4) {
-      left: 45px;
-      animation: lds-ellipsis3 0.6s infinite;
-  }
-  @keyframes lds-ellipsis1 {
-      0% {
-          transform: scale(0);
-     }
-      100% {
-          transform: scale(1);
-     }
-  }
-  @keyframes lds-ellipsis3 {
-      0% {
-          transform: scale(1);
-     }
-      100% {
-          transform: scale(0);
-     }
-  }
-  @keyframes lds-ellipsis2 {
-      0% {
-          transform: translate(0, 0);
-     }
-      100% {
-          transform: translate(19px, 0);
-     }
-  }
+.editor-button:first-child {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 0px;
+}
 
-  .input-grid input{
-    border: 0px;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-  }
+.editor-button:last-child {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 0px;
+}
 
-  .input-grid  .secondary-button {
-    border: 0px;
-    background: rgba(164, 55, 116, 0.24);
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    color: var(--light-text);
-  }
+.editor-button:nth-child(even) {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.editor-button.is-active {
+  background: green;
+}
+
+.editor-button.is-active {
+}
+
+.editor-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.markdown-editor textarea {
+  min-height: calc(60vh + 32px);
+  resize: none;
+}
+
+.lds-ellipsis div {
+    position: absolute;
+    top: 1px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.15);
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+    left: 6px;
+    animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+    left: 6px;
+    animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+    left: 26px;
+    animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+    left: 45px;
+    animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+    0% {
+        transform: scale(0);
+   }
+    100% {
+        transform: scale(1);
+   }
+}
+@keyframes lds-ellipsis3 {
+    0% {
+        transform: scale(1);
+   }
+    100% {
+        transform: scale(0);
+   }
+}
+@keyframes lds-ellipsis2 {
+    0% {
+        transform: translate(0, 0);
+   }
+    100% {
+        transform: translate(19px, 0);
+   }
+}
+
+.input-grid input{
+  border: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.input-grid  .secondary-button {
+  border: 0px;
+  background: rgba(164, 55, 116, 0.24);
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  color: var(--light-text);
+}
 
 
 

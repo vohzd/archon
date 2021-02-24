@@ -36,7 +36,7 @@ export default {
 <style lang="css">
 
   .sidebar {
-    width: 256px;
+    width: 12%;
     height: 100vh;
     display: inline-block;
     position: fixed;
