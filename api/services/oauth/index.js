@@ -1,7 +1,12 @@
-const {
+import { collection }                     from "../../db/index.js";
+import {
   completeGoogleAuth,
   generateGoogleAuthURL
-}                                 = require("./google.js");
+}                                         from "./google.js"
+
+
+const accounts                            = collection("accounts");
+
 
 async function generateAuthURL(website){
   console.log("service: oauth connect");
@@ -30,6 +35,10 @@ async function completeAuth(website, token){
 
   // secondly, save it to disk in accounts.json
   console.log("save to disk here...");
+  const transaction = await accounts.put({ website: "youtube", tokens });
+
+  console.log("transaction:");
+  console.log(transaction);
 
 
 

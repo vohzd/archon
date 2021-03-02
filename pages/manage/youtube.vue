@@ -19,6 +19,7 @@
             <div class="">status</div>
             <div class="">delete</div>
           </div>
+
           <div v-for="(account, i) in accounts('youtube')" class="medium sync-grid-item">
             <div>{{ account.username }}</div>
             <div class="">{{ account.lastSync }} (<a @click="handleSync(account, i)">sync?</a>)</div>
@@ -85,7 +86,7 @@ export default {
 
         console.log("completed....");
         console.log(data);
-        
+
         // data.url looks like https://accounts.google.com/o/oauth2/ETCETC
         window.location = data.url
 

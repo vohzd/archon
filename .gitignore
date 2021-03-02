@@ -4,6 +4,8 @@ package-lock.json
 npm-debug.log
 access.json
 
+data/
+
 .env
 
 .nuxt

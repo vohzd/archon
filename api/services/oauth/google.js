@@ -1,5 +1,5 @@
 const { OAuth2Client }                     = require("google-auth-library");
-const client                               = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, "http://localhost:3000/connect/google")
+const client                               = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, "http://localhost:3000/connect/youtube")
 
 async function generateGoogleAuthURL(){
   console.log("service: generateGoogleAuthURL");

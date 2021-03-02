@@ -1,44 +1,47 @@
-import fs from "fs-extra";
-import path from "path";
-import id from "../helpers/id.js";
+import path                       from "path";
+const dataPath                    = `${ path.resolve() }/data`;
 
-const dataPath = `${ path.resolve() }/data`;
+import shortId                    from "../helpers/id.js";
 
-/* INTERNAL FILE I/O */
-async function _get(fileName){
-  await fs.ensureFile(fileName);
-  return await fs.readFile(fileName, "utf-8");
-}
-
-async function _append(fileName, data){
-  console.log("append caalled");
-  console.log(fileName);
-  let file = JSON.parse(await _get(fileName));
-
-  // todo, unique ids...
-  file.push(data)
-
-  return await writeFile(fileName, JSON.stringify(file));
-}
+import {
+  _get, _put
+}                                 from "./_methods.js";
 
 
-/* PUBLIC API */
+/*
+  *******************************************************
+
+  PUBLIC API
+
+  These are exposed to whatever needs it
+  *******************************************************
+*/
 export function collection(name){
-
-  console.log(`init ${name}`);
-
+  console.log(`initialising collection: ${name}`);
   const fileName = `${dataPath}/${name}.json`;
 
   return {
     async get(query){
+      console.log("collection.get()");
+
+      // literally returns the entire file for now...
+      // TODO: implement 'query'
       return await _get(fileName);
     },
     async put(data){
-      return await _append(fileName, { id: id.gen(), ...data })
+      console.log("collection.put()");
+      console.log(data);
+      // appends a completely new item of the _id is missing or DOESNT exist in the file
+      const _id = data._id ? data._id : shortId.gen();
+
+      console.log(_id);
+
+      return await _put(fileName, { _id, ...data })
     },
+    /*
     async update(data){
       console.log("update");
       console.log(data);
-    }
+    }*/
   }
 }

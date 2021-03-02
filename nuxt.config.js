@@ -38,5 +38,5 @@ module.exports = {
   ],
   serverMiddleware: ["~/api/index.js" ],
   title: "Curator",
-  watch: ["~api"]
+  watch: ["~api/*"]
 }
