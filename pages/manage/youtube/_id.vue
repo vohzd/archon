@@ -53,10 +53,28 @@ export default {
         }
       });
       this.playlistCount = data.pageInfo.totalResults
+    },
+    async getPlaylistItems(){
+
+      const queryIds = this.playlists.map((item) => {
+        return item._id
+      }).join("&id=");
+
+
+      console.log(queryIds);
+
+      const url = `https://www.googleapis.com/youtube/v3/playlistItems?access_token=${this.account.tokens.access_token}&part=contentDetails,snippet&id=${encodeURIComponent(queryIds)}&maxResults=50`
+
+
+      console.log(url);
+      const { data } =  await this.$axios.get(url);
+      console.log(data);
+
     }
   },
-  mounted(){
-    this.getPlaylists();
+  async mounted(){
+    await this.getPlaylists();
+    await this.getPlaylistItems();
   }
 }
 </script>

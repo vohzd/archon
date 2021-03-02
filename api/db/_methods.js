@@ -15,7 +15,7 @@ export async function _get(fileName){
   console.log(fileExists);
 
   if (!fileExists){
-    await fs.writeJSON(fileName, { accounts: [] });
+    await fs.writeJSON(fileName, []);
   }
   return await fs.readFile(fileName, "utf-8");
 }
@@ -24,13 +24,13 @@ export async function _put(fileName, data){
   console.log("_put called");
   console.log(fileName);
   console.log(data);
-  let { accounts } = JSON.parse(await _get(fileName));
+  let file = JSON.parse(await _get(fileName));
 
-  console.log("accounts");
-  console.log(accounts);
+  console.log("file");
+  console.log(file);
 
   console.log("new data");
   console.log(data);
-  accounts.push(data)
-  return await fs.writeJSON(fileName, accounts);
+  file.push(data)
+  return await fs.writeJSON(fileName, file);
 }
