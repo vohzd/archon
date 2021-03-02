@@ -12,6 +12,6 @@ export default {
   async getAccounts({ commit, dispatch }){
     console.log("action: getAccounts");
     let { data } = await this.$axios.get(`/api/account/`);
-    commit("SET_ACCOUNTS", data);
+    commit("SET_ACCOUNTS", JSON.parse(data));
   }
 }

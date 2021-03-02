@@ -20,12 +20,20 @@
             <div class="">delete</div>
           </div>
 
-          <div v-for="(account, i) in accounts('youtube')" class="medium sync-grid-item">
-            <div>{{ account.username }}</div>
-            <div class="">{{ account.lastSync }} (<a @click="handleSync(account, i)">sync?</a>)</div>
-            <div class="">{{ statuses[i] }}</div>
-            <div class="">x</div>
-          </div>
+
+            <div v-for="(account, i) in accounts('website', 'youtube')" class="medium sync-grid-item">
+
+              <nuxt-link :to="`/manage/youtube/${account._id}`">
+                {{ account }}
+              </nuxt-link>
+              
+              <!--
+              <div>{{ account.username }}</div>
+              <div class="">{{ account.lastSync }} (<a @click="handleSync(account, i)">sync?</a>)</div>
+              <div class="">{{ statuses[i] }}</div>
+              <div class="">x</div>-->
+            </div>
+
         </div>
       </div>
     </div>
