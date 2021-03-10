@@ -3,10 +3,10 @@
     <div class="row">
       <h2>New Markdown</h2>
 
-      <div class="row mt mb">
+      <form class="row mt mb">
 
         <!-- filename -->
-        <input placeholder="filename" v-model="markdownFileName" class="mb"/>
+        <input placeholder="filename" v-model="filename" class="mb"/>
 
         <!-- file contents -->
         <div class="grid">
@@ -20,16 +20,17 @@
             <header>
               <button class="editor-button">test</button>
             </header>
-            <textarea v-model="markdownFileContents" @keyup="updateHtml"></textarea>
+            <textarea v-model="contents" @keyup="updateHtml"></textarea>
           </div>
         </div>
 
-      </div>
+        <div class="mt mb">
+          <form-button @click.native.prevent="saveMarkdown" :is-disabled="isDisabled" button-text="Save"></form-button>
+        </div>
+
+      </form>
 
 
-      <div class="c50">
-        <button>Save</button>
-      </div>
     </div>
   </main>
 </template>
@@ -41,6 +42,7 @@ import { mapActions, mapGetters } from "vuex";
 
 import showdown from "showdown";
 
+import FormButton from "~/components/form/FormButton.vue";
 import HtmlEditor from "~/components/form/HTMLEditor.vue";
 
 export default {
@@ -50,13 +52,15 @@ export default {
     ]),
   },
   components: {
+    FormButton,
     HtmlEditor
   },
   data(){
     return {
       converter: new showdown.Converter(),
-      markdownFileName: null,
-      markdownFileContents: null,
+      filename: null,
+      contents: null,
+      isDisabled: true,
       htmlContent: null
     }
   },
@@ -72,12 +76,38 @@ export default {
       return this.converter.makeHtml(md)
     },
     updateMarkdown(content){
-      this.markdownFileContents = this.htmlToMD(content);
+      if (this.isDisabled){
+        this.isDisabled = false;
+      }
+
+      this.contents = this.htmlToMD(content);
     },
     updateHtml(){
       console.log("test!")
-      this.htmlContent = this.mdToHtml(this.markdownFileContents);
+      this.htmlContent = this.mdToHtml(this.contents);
       console.log(this.htmlContent)
+    },
+    async saveMarkdown(){
+      console.log("******************************");
+      console.log("method: saveMarkdown");
+
+      //let { data } = await this.$axios.get(`/api/account/`);
+
+
+      const { data } = await this.$axios.post("/api/markdown/", {
+        contents: this.contents,
+        filename: this.filename
+      });
+
+      console.log("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
+      console.log(data);
+      console.log("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
+      console.log("******************************");
+
+      /*
+      this.filename
+      this.contents
+      */
     }
   },
 }

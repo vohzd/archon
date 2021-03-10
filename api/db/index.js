@@ -16,6 +16,12 @@ import {
   These are exposed to whatever needs it
   *******************************************************
 */
+
+
+/*
+  @param name { string }
+  @returns file { json }
+*/
 export function collection(name){
   console.log(`initialising collection: ${name}`);
   const fileName = `${dataPath}/${name}.json`;
