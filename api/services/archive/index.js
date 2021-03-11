@@ -1,55 +1,24 @@
-const axios                               = require("axios");
-const { collection }                      = require("../../db/index.js");
+//const { collection }                      = require("../../db/index.js");
 
-async function archive (account, ws){
-  console.log("fn achive");
-  console.log(account);
-
-  ws.send(`archiving ${ account.website } ...`);
-  const col = collection(`${account.website}/${account.username}`);
-
-  if (account.website === "last.fm"){
-    try {
-      const { data } = await axios.get(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${account.username}&api_key=3329fbd5c9a9642aac2144cff8dc183a&format=json&limit=1&page=1`);
-      const totalTracks = data.recenttracks["@attr"].total;
-      ws.send(`total tracks: ${ totalTracks } `);
-
-      await col.put({
-        totalTracks
-      })
+import LastFM from "./adapters/lastfm/index.js";
 
 
 
-      console.log(data);
-    }
-    catch (e){
-      console.log("wtf, failed");
-      console.log(e);
-      console.log(e.message);
-      console.log(e.reason);
 
-    }
+export async function getArchiveSize(website, username){
+  switch (website) {
+
+    case "lastfm":
+      console.log("getting total from lastfm")
+      console.log(username)
+      return await LastFM.getTotal(username);
+
+    case "google":
+      console.log("something else");
+      break;
+
+    default:
+      console.log("default.....");
+      break;
   }
-}
-
-
-/*
-switch (decoded.website) {
-
-  case "last.fm":
-    console.log("do some lastfm fuckery here");
-    break;
-
-  case "something":
-    console.log("nwa");
-    break;
-
-  default:
-    console.log("they're all dead dave");
-    break;
-}*/
-
-
-module.exports = {
-  archive
 }

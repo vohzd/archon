@@ -130,6 +130,7 @@ textarea {
 }
 
 button[disabled] {
+  opacity: 0.3;
   background: rgba(164, 55, 116, 0.04);
   color: rgba(255, 255, 255, 0.14);
 }
@@ -426,6 +427,11 @@ a button:hover:not(:disabled) {
   color: var(--light-text);
 }
 
+.subtle-button {
+  background: none;
+  border: 1px solid;
+  color: white;
+}
 
 
 @media (max-width: 1000px) {

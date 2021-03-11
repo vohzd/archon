@@ -2,14 +2,11 @@
   <main class="pad">
 
     <div class="row">
-      <h2>Lastfm sync</h2>
+      <h2>YouTube sync</h2>
 
       <div class="row mt">
         <h4>Add a new user</h4>
-        <div class="input-grid row mt">
-          <input placeholder="lastfm username" v-model="newUsername" />
-          <button class="secondary-button" @click="addNewAccount">+</button>
-        </div>
+        <button class="secondary-button" @click="addNewAccount">Connect YouTube account</button>
       </div>
 
       <div class="row mtx">
@@ -22,27 +19,36 @@
             <div class="">status</div>
             <div class="">delete</div>
           </div>
-          <div v-for="(account, i) in accounts('last.fm')" class="medium sync-grid-item">
-            <div>{{ account.username }}</div>
-            <div class="">{{ account.lastSync }} (<a @click="handleSync(account, i)">sync?</a>)</div>
-            <div class="">{{ statuses[i] }}</div>
-            <div class="">x</div>
-          </div>
+
+
+            <div v-for="(account, i) in accounts('website', 'youtube')" class="medium sync-grid-item">
+
+              <nuxt-link :to="`/manage/youtube/${account._id}`">
+                {{ account }}
+              </nuxt-link>
+              
+              <!--
+              <div>{{ account.username }}</div>
+              <div class="">{{ account.lastSync }} (<a @click="handleSync(account, i)">sync?</a>)</div>
+              <div class="">{{ statuses[i] }}</div>
+              <div class="">x</div>-->
+            </div>
+
         </div>
       </div>
     </div>
     <!--
     <section >
-      <h2>Export your last.fm tracks</h2>
+      <h2>Export your lastfm tracks</h2>
       <p>hint, try mine... <code>vohzd</code></p>
       <div class="row">
-        <input v-model="user" placeholder="last.fm username" class="mr" />
+        <input v-model="user" placeholder="lastfm username" class="mr" />
         <button @click="go" class="mt">{{ buttonText }}</button>
       </div>
       <div v-if="numPages">
         <p>Downloaded {{ currentPage }} / {{ numPages }} pages.</p>
         <p>Downloaded {{ trackDownloadProgress }} / {{ numTracks }} tracks!</p>
-      </div>[{"id":"2FixyZrNjCj","username":"vohzd","website":"last.fm","lastSync":1
+      </div>[{"id":"2FixyZrNjCj","username":"vohzd","website":"lastfm","lastSync":1
     </section>
     <section >
       <div v-if="tracks" class="exported-tracks">
@@ -70,7 +76,6 @@ export default {
   },
   data(){
     return {
-      newUsername: null,
       socketConnection: null,
       statuses: []
     }
@@ -80,12 +85,24 @@ export default {
       "addAccount",
       "sync"
     ]),
-    addNewAccount(){
-      if (!this.newUsername) return;
-      this.addAccount({
-        username: this.newUsername,
-        website: "last.fm"
-      })
+    async addNewAccount(){
+      try {
+        console.log("attemping to add...");
+
+        // firstly, gets a url from youtube/google that takes us to a auth page on THEIR SERVERS
+        let { data } = await this.$axios.get(`/api/oauth/generate-url?website=youtube`);
+
+        console.log("completed....");
+        console.log(data);
+
+        // data.url looks like https://accounts.google.com/o/oauth2/ETCETC
+        window.location = data.url
+
+      }
+      catch (e){
+        console.log(e);
+      }
+
     },
     async createSocket(){
       return new Promise((resolve, reject) => {
@@ -129,9 +146,9 @@ export default {
     },
     head () {
       return {
-        title: "Last.fm Exporter | vohzd.com",
+        title: "lastfm Exporter | vohzd.com",
         meta: [
-          { hid: "description", name: "description", content: "Export your entire last.fm history" },
+          { hid: "description", name: "description", content: "Export your entire lastfm history" },
           { hid: "keywords", name: "keywords", content: "lastfm" },
         ]
       }

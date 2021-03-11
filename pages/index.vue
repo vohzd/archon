@@ -28,7 +28,7 @@
             <img src="~/assets/img/github.png" />
           </div>
           <div class="absolute-bottom-left row">
-            <nuxt-link to="/manage/lastfm"><button>Manage</button></nuxt-link>
+            <nuxt-link to="/lastfm"><button>Manage</button></nuxt-link>
           </div>
         </div>
 
@@ -37,7 +37,7 @@
             <img src="~/assets/img/lastfm.png"  />
           </div>
           <div class="absolute-bottom-left row">
-            <nuxt-link to="/manage/lastfm"><button>Manage</button></nuxt-link>
+            <nuxt-link to="/lastfm"><button>Manage</button></nuxt-link>
           </div>
         </div>
 
@@ -55,7 +55,7 @@
             <img src="~/assets/img/youtube.png"  />
           </div>
           <div class="absolute-bottom-left row">
-            <nuxt-link to="/manage/youtube"><button> Manage</button></nuxt-link>
+            <nuxt-link to="/youtube"><button> Manage</button></nuxt-link>
           </div>
         </div>
 

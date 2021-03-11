@@ -1,20 +1,43 @@
+import WebSocket from "ws";
 
-const WebSocket                         = require("ws");
-const wss                               = new WebSocket.Server({ noServer: true })
+import {
+  getArchiveSize
+} from "../services/archive/index.js";
 
-
-/* not needed as of yet
-const {
-  archiveGH
-}                                       = require("../services/github/index.js");
-*/
-
-const { archive }                       = require("../services/archive/index.js");
+const wss = new WebSocket.Server({ noServer: true })
 
 /* INSTANTIATION */
-wss.on("connection", ws => {
-  ws.on("message", message => {
-    archive(JSON.parse(message), ws);
+wss.on("connection", (ws) => {
+  ws.on("message", async (message) => {
+
+    /*
+     it always arrives as a string
+     */
+    const msg = JSON.parse(message);
+
+    switch (msg.action){
+
+      case "createArchive":
+        console.log("createArchive")
+
+        /* returns integer */
+        const size = await getArchiveSize(msg.website, msg.username);
+        ws.send(`Total Size: ${size}`)
+
+        //const something = getArchiveSize(msg.website, msg.username);
+        //console.log(something)
+
+
+        break;
+
+      default:
+        console.log("default action")
+        break;
+
+
+    }
+
+    //archive(JSON.parse(message), ws);
   })
 });
 

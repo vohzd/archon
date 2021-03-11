@@ -21,16 +21,15 @@ router.get("/", async (req, res, next) => {
 router.post("/", async (req, res) => {
   console.log("route: POST /account")
   console.log(req.body);
-  /* UNUSED
+
   const username = req.body.username;
   const website = req.body.website;
-  const lastSync = Date.now();
-
+  const lastSync = null;
   try {
     const newAccount = await accounts.put({ username, website, lastSync });
     return res.send(newAccount);
   }
-  catch (e){ return errorHandler(res, e); }*/
+  catch (e){ return errorHandler(res, e); }
 });
 
 

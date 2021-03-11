@@ -2,53 +2,50 @@
   <main class="pad">
 
     <div class="row">
-      <h2>YouTube sync</h2>
+      <h2>lastfm Sync</h2>
 
-      <div class="row mt">
+      <form class="row mt">
         <h4>Add a new user</h4>
-        <button class="secondary-button" @click="addNewAccount">Connect YouTube account</button>
-      </div>
+        <div class="relative row inline-block">
+          <div class="input-grid row mt relative">
+            <input placeholder="lastfm username" v-model="newUsername" />
+            <form-button button-text="+" :is-disabled="isDisabled" class="secondary-button" @click.prevent.native="addNewAccount"></form-button>
+          </div>
+          <div class="form-feedback" v-if="formFeedback">
+            <label>{{ formFeedback }}</label>
+          </div>
+        </div>
+      </form>
 
       <div class="row mtx">
-        <h4>Users</h4>
 
         <div class="sync-grid mt">
-          <div class="sync-grid-item">
-            <div class="">username</div>
-            <div class="">last sync'd</div>
-            <div class="">status</div>
-            <div class="">delete</div>
+          <div class="sync-grid-item mb">
+            <div class="">Username</div>
+            <div class="">Last Sync</div>
+            <div class="">Manage?</div>
           </div>
 
-
-            <div v-for="(account, i) in accounts('website', 'youtube')" class="medium sync-grid-item">
-
-              <nuxt-link :to="`/manage/youtube/${account._id}`">
-                {{ account }}
-              </nuxt-link>
-              
-              <!--
-              <div>{{ account.username }}</div>
-              <div class="">{{ account.lastSync }} (<a @click="handleSync(account, i)">sync?</a>)</div>
-              <div class="">{{ statuses[i] }}</div>
-              <div class="">x</div>-->
-            </div>
-
+          <div v-for="(account, i) in accounts('lastfm')" class="medium sync-grid-item">
+            <div>{{ account.username }}</div>
+            <div>{{ account.lastSync ? account.lastSync : "Never" }}</div>
+            <div><nuxt-link :to="`/lastfm/${account._id}`">Click</nuxt-link></div>
+          </div>
         </div>
       </div>
     </div>
     <!--
     <section >
-      <h2>Export your last.fm tracks</h2>
+      <h2>Export your lastfm tracks</h2>
       <p>hint, try mine... <code>vohzd</code></p>
       <div class="row">
-        <input v-model="user" placeholder="last.fm username" class="mr" />
+        <input v-model="user" placeholder="lastfm username" class="mr" />
         <button @click="go" class="mt">{{ buttonText }}</button>
       </div>
       <div v-if="numPages">
         <p>Downloaded {{ currentPage }} / {{ numPages }} pages.</p>
         <p>Downloaded {{ trackDownloadProgress }} / {{ numTracks }} tracks!</p>
-      </div>[{"id":"2FixyZrNjCj","username":"vohzd","website":"last.fm","lastSync":1
+      </div>[{"id":"2FixyZrNjCj","username":"vohzd","website":"lastfm","lastSync":1
     </section>
     <section >
       <div v-if="tracks" class="exported-tracks">
@@ -67,8 +64,12 @@
 
 import Vue from "vue";
 import { mapActions, mapGetters } from "vuex";
+import FormButton from "~/components/form/FormButton.vue";
 
 export default {
+  components: {
+    FormButton
+  },
   computed: {
     ...mapGetters([
       "accounts"
@@ -76,8 +77,9 @@ export default {
   },
   data(){
     return {
-      socketConnection: null,
-      statuses: []
+      isDisabled: true,
+      formFeedback: null,
+      newUsername: null,
     }
   },
   methods: {
@@ -85,49 +87,28 @@ export default {
       "addAccount",
       "sync"
     ]),
-    async addNewAccount(){
-      try {
-        console.log("attemping to add...");
-
-        // firstly, gets a url from youtube/google that takes us to a auth page on THEIR SERVERS
-        let { data } = await this.$axios.get(`/api/oauth/generate-url?website=youtube`);
-
-        console.log("completed....");
-        console.log(data);
-
-        // data.url looks like https://accounts.google.com/o/oauth2/ETCETC
-        window.location = data.url
-
-      }
-      catch (e){
-        console.log(e);
-      }
-
+    addNewAccount(){
+      if (!this.newUsername) return;
+      this.addAccount({
+        username: this.newUsername,
+        website: "lastfm"
+      })
+      this.newUsername = "";
     },
-    async createSocket(){
-      return new Promise((resolve, reject) => {
-        this.socketConnection = new WebSocket("ws://localhost:3000");
-        this.socketConnection.onopen = (event) => resolve();
-        this.socketConnection.onerror = (err) => reject(err);
-      });
-    },
-    async handleSync(account, i){
-
-      Vue.set(this.statuses, i, "bootstrapping");
-
-      if (!this.socketConnection){
-        await this.createSocket();
-      }
-
-      Vue.set(this.statuses, i, "connection established");
-
-      this.socketConnection.send(JSON.stringify(account));
-
-      this.socketConnection.onmessage = (message) => {
-        Vue.set(this.statuses, i, message.data);
-      };
-    }
   },
+  watch: {
+    newUsername(){
+      if (this.newUsername){
+        this.isDisabled = false;
+        const existing = this.accounts('website', 'lastfm');
+        const duped = existing.find((item) => item.username === this.newUsername);
+        duped ? ( this.formFeedback = "Duplicate username" , this.isDisabled = true ) : ( this.formFeedback = null , this.isDisabled = false );
+      }
+      else {
+        this.isDisabled = true;
+      }
+    }
+  }
 }
 
 
@@ -146,9 +127,9 @@ export default {
     },
     head () {
       return {
-        title: "Last.fm Exporter | vohzd.com",
+        title: "lastfm Exporter | vohzd.com",
         meta: [
-          { hid: "description", name: "description", content: "Export your entire last.fm history" },
+          { hid: "description", name: "description", content: "Export your entire lastfm history" },
           { hid: "keywords", name: "keywords", content: "lastfm" },
         ]
       }
@@ -224,6 +205,17 @@ export default {
   .sync-grid-item {
     display: grid;
     grid-template-columns: 2fr 2fr 2fr 1fr;
+  }
+
+  .form-feedback {
+    background: rgba(0,0,0,0.3);
+    position: absolute;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    bottom: -32px;
+    width: 100%;
+    text-align: center;
+    padding: 4px;
   }
 
 </style>
