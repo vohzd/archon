@@ -2,16 +2,32 @@
 
 import LastFM from "./adapters/lastfm/index.js";
 
+export async function createArchive(website, username, totalPages){
+
+  switch (website) {
+
+    case "lastfm":
+      console.log("LAST FM ARCHIVE PLZ KTHNXBAI");
+      return LastFM.createArchive(username, totalPages);
+      break
+
+    case "google":
+      console.log("something else");
+      break;
+
+    default:
+      console.log("default.....");
+      break;
+  }
 
 
+}
 
 export async function getArchiveSize(website, username){
   switch (website) {
 
     case "lastfm":
-      console.log("getting total from lastfm")
-      console.log(username)
-      return await LastFM.getTotal(username);
+      return await LastFM.getTotalTracks(username);
 
     case "google":
       console.log("something else");

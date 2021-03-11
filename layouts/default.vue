@@ -18,6 +18,14 @@ export default {
     ...mapGetters([
       "accounts"
     ])
+  },
+  methods: {
+    ...mapActions([
+      "createSocket"
+    ])
+  },
+  async mounted(){
+    await this.createSocket();
   }
 };
 </script>

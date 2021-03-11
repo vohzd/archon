@@ -1,8 +1,16 @@
 import WebSocket from "ws";
 
+
 import {
+  createArchive,
   getArchiveSize
 } from "../services/archive/index.js";
+
+
+/* used for testing */
+import {
+  mockCreateArchive
+} from "../services/mock/index.js";
 
 const wss = new WebSocket.Server({ noServer: true })
 
@@ -17,23 +25,55 @@ wss.on("connection", (ws) => {
 
     switch (msg.action){
 
+      // ************************START***********************************
       case "createArchive":
-        console.log("createArchive")
 
-        /* returns integer */
-        const size = await getArchiveSize(msg.website, msg.username);
-        ws.send(`Total Size: ${size}`)
+          // will return a number like '92507'
+          const totalTracks = await getArchiveSize(msg.website, msg.username);
+          ws.send(`Total Tracks: ${totalTracks}`);
 
-        //const something = getArchiveSize(msg.website, msg.username);
-        //console.log(something)
+          // lastfm supports up to 1000 items per page
+          // so.... divide by 1000 and rounds to nearest whole number javascript
+          let totalPages = Math.round(totalTracks / 1000);
+
+          // retreive a generator that calls the lastfm API `pages` (e.g 93) times.
+          const apiCalls = await createArchive(msg.website, msg.username, totalPages);
+
+          // send back some info to the client on progress
+          let currentPage = 1;
+          while (currentPage <= totalPages){
+            currentPage++;
+            const outcome = await apiCalls.next();
+            ws.send(`Current Page: ${currentPage}`);
+            console.log(outcome)
+          }
+
+          // we're done here
+          console.log("COMPLETE!!!!!!!!!!")
+          break;
+      // ------------------------FINISH----------------------------------
 
 
+      // ************************START***********************************
+      case "mockCreateArchive":
+        console.log("mockCreateArchive")
+        let pages = 5;
+        const mockGenerator = mockCreateArchive(msg.website, msg.username, pages)
+        while (pages !== 0){
+          pages--
+          const outcome = await mockGenerator.next();
+          console.log("return this data somewhere!!!!!!")
+          console.log(outcome)
+        }
+        console.log("COMPLETE!!!!!!!!!!")
         break;
+      // ------------------------FINISH----------------------------------
 
+      // ************************START***********************************
       default:
         console.log("default action")
         break;
-
+      // ------------------------FINISH----------------------------------
 
     }
 

@@ -8,10 +8,7 @@
     </div>
 
     <div class="mtx notifications">
-
-      <label class="medium center row">Notifications  <font-awesome-icon :icon="['fas', 'comment']"></font-awesome-icon> (0)</label>
-
-      <span v-for="notification in notifications">{{ notification }}</span>
+      <code v-for="notification in notifications" class="notification row mb ">{{ notification }}</code>
     </div>
   </span>
 </template>
@@ -42,6 +39,19 @@ export default {
     position: fixed;
     top: 0;
     background: #1f2229;
+  }
+
+  .notifications {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .notification {
+    font-size: 11px;
+    background: rgba(0,0,0,0.3);
+    padding: 4px;
+    border-radius: 3px;
+    line-height: 11px;
   }
 
 </style>
