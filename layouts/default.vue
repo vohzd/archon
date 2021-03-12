@@ -170,8 +170,8 @@ a button:hover:not(:disabled) {
 .main-view {
   margin: auto;
   height: 100vh;
-  width: 88%;
-  margin-left: 12%;
+  width: 85%;
+  margin-left: 15%;
 }
 
 .mt {

@@ -7,7 +7,6 @@ export default {
   },
   async createSocket({ commit, dispatch }){
     commit("SET_SOCKET", new WebSocket("ws://localhost:3000"));
-    dispatch("logger", "Connected to Server");
     this.getters.socket.onmessage = (message) => {
       console.log("new message")
       console.log(message)
@@ -15,7 +14,12 @@ export default {
     };
   },
   logger({ commit, dispatch}, msg){
-    const now = Date.now();
-    commit("ADD_NOTIFICATION", `${ new Date(Date.now()).toTimeString().split(" ")[0] } - ${ msg }`);
+
+    const json = JSON.parse(msg);
+    commit("ADD_JOB", {
+      time: new Date(Date.now()).toTimeString().split(" ")[0],
+      ...json
+    });
+
   }
 };

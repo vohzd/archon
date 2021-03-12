@@ -7,7 +7,7 @@ export async function createArchive(website, username, totalPages){
   switch (website) {
 
     case "lastfm":
-      console.log("LAST FM ARCHIVE PLZ KTHNXBAI");
+      // this is a generator !
       return LastFM.createArchive(username, totalPages);
       break
 

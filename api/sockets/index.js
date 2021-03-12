@@ -9,18 +9,15 @@ import {
 
 /* used for testing */
 import {
-  mockCreateArchive
+  mockCreateArchive,
+  mockJob
 } from "../services/mock/index.js";
 
-const wss = new WebSocket.Server({ noServer: true })
+const wss = new WebSocket.Server({ noServer: true });
 
-/* INSTANTIATION */
+
 wss.on("connection", (ws) => {
   ws.on("message", async (message) => {
-
-    /*
-     it always arrives as a string
-     */
     const msg = JSON.parse(message);
 
     switch (msg.action){
@@ -28,6 +25,7 @@ wss.on("connection", (ws) => {
       // ************************START***********************************
       case "createArchive":
 
+      /*
           // will return a number like '92507'
           const totalTracks = await getArchiveSize(msg.website, msg.username);
           ws.send(`Total Tracks: ${totalTracks}`);
@@ -47,25 +45,44 @@ wss.on("connection", (ws) => {
             ws.send(`Current Page: ${currentPage}`);
             console.log(outcome)
           }
-
+*/
           // we're done here
           console.log("COMPLETE!!!!!!!!!!")
           break;
       // ------------------------FINISH----------------------------------
 
+      // ************************START***********************************
+      case "mockJob":
+          mockJob(ws, msg.website, msg.username);
+          break;
+      // ------------------------FINISH----------------------------------
 
       // ************************START***********************************
       case "mockCreateArchive":
         console.log("mockCreateArchive")
-        let pages = 5;
-        const mockGenerator = mockCreateArchive(msg.website, msg.username, pages)
-        while (pages !== 0){
-          pages--
+        mockCreateArchive(ws, website, username)
+        /*
+        const jobIndex = getJobIndex("mockCreateArchive", msg.website, msg.username);
+        console.log(jobIndex);
+
+
+        const pages = 5;
+        let currentPage = 1;
+        const mockGenerator = mockCreateArchive(msg.website, msg.username, pages);
+
+
+        while (currentPage <= pages){
+          currentPage++;
           const outcome = await mockGenerator.next();
+
+          ws.send(`Current Page: ${currentPage}`);
+
           console.log("return this data somewhere!!!!!!")
           console.log(outcome)
         }
-        console.log("COMPLETE!!!!!!!!!!")
+
+*/
+
         break;
       // ------------------------FINISH----------------------------------
 

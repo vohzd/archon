@@ -40,26 +40,28 @@ export default {
   },
   methods: {
     ...mapActions([
-      "addNotification",
       "logger",
       "sync"
     ]),
     async handleSync(account, i){
 
       this.isLoading = true;
-      this.logger("Contacting Server");
 
       // send
+      /*
       this.socket.send(JSON.stringify({
         action: "createArchive",
         website: "lastfm",
         username: this.account.username
-      }));
+      }));*/
+
+      this.socket.send(JSON.stringify({
+        action: "mockJob",
+        website: "lastfm",
+        username: this.account.username
+      }))
 
     }
-  },
-  mounted(){
-    //this.logger("Waiting");
   }
 }
 
