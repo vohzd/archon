@@ -31,7 +31,7 @@
     "showdown": "^1.9.1",
     "tiptap": "^1.32.1",
     "tiptap-extensions": "^1.35.1",
-    "ws": "^7.4.4"
+    "ws": "^7.4.6"
   },
   "devDependencies": {
     "dotenv": "^8.2.0"
